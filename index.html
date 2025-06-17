@@ -1,142 +1,228 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SGPA Calculator - ME 1st Sem</title>
+  <title>BEU Result Prediction - Mechanical</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 0;
-      background-color: #f2f2f2;
-    }
-    h1 {
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #e0e0e0;
-    }
-    input[type="number"] {
-      width: 60px;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .result {
+
+    h1, h2 {
+      text-align: center;
+      color: orange;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .subject {
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: orange;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #sgpaResult {
       text-align: center;
       margin-top: 20px;
-      font-size: 1.2em;
-      font-weight: bold;
+      font-size: 20px;
+      color: orange;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>SGPA Calculator - ME 1st Semester</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Subject</th>
-        <th>Credit</th>
-        <th>Type</th>
-        <th>Marks</th>
-      </tr>
-    </thead>
-    <tbody id="subject-table"></tbody>
-  </table>
-  <div style="text-align:center; margin-top:20px">
+  <h1>BEU Semester Result Prediction</h1>
+  <h2>For Mechanical Branch</h2>
+
+  <label for="semester">Select Semester:</label>
+  <select id="semester" onchange="loadSubjects()">
+    <option value="">--Select--</option>
+    <option value="1">1st Semester</option>
+    <option value="2">2nd Semester</option>
+    <option value="3">3rd Semester</option>
+    <option value="4">4th Semester</option>
+    <option value="5">5th Semester</option>
+  </select>
+
+  <form id="marksForm"></form>
+  <div id="sgpaResult"></div>
+
+  <div class="btn-container">
     <button onclick="calculateSGPA()">Calculate SGPA</button>
+    <button onclick="downloadPDF()">Download PDF</button>
   </div>
-  <div class="result" id="sgpa-result"></div>
-</div>
 
-<script>
-const subjects = [
-  { name: "Engineering Chemistry", credit: 3, type: "Theory" },
-  { name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-  { name: "Communicative English", credit: 3, type: "Theory" },
-  { name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
-  { name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
-  { name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
-  { name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-  { name: "Communicative English Lab", credit: 1, type: "Practical" },
-  { name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
-  { name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
-];
+  <script>
+    const semesters = {
+      1: [
+        ["Engineering Chemistry", 3],
+        ["Engineering Mathematics-I", 4],
+        ["Communicative English", 3],
+        ["Engineering Graphics and Design", 1],
+        ["Basic Electrical Engineering", 3],
+        ["Sports/Yoga/NCC/NSS", 1, "Practical"],
+        ["Engineering Chemistry Lab", 1, "Practical"],
+        ["Communicative English Lab", 1, "Practical"],
+        ["Engineering Graphics and Design Lab", 2, "Practical"],
+        ["Basic Electrical Engineering Lab", 1, "Practical"]
+      ],
+      2: [
+        ["Engineering Physics", 3],
+        ["Engineering Mathematics-II", 4],
+        ["Programming for Problem Solving", 3],
+        ["Swachha Bharat Mission", 1, "Practical"],
+        ["Workshop Practices", 2],
+        ["Elements of Mechanical Engineering", 3],
+        ["Engineering Physics Lab", 1, "Practical"],
+        ["Programming for Problem Solving Lab", 1, "Practical"],
+        ["Workshop Practices Lab", 1, "Practical"],
+        ["Elements of Mechanical Engineering Lab", 1, "Practical"]
+      ],
+      3: [
+        ["BIOLOGY FOR ENGINEERS", 3],
+        ["BASIC ELECTRONICS ENGINEERING", 4],
+        ["ENGINEERING MECHANICS", 3],
+        ["MATHEMATICS-III", 4],
+        ["THERMODYNAMICS", 4],
+        ["ENGINEERING MECHANICS LAB", 1, "Practical"],
+        ["Internship", 4],
+        ["Machine Drawing", 2, "Practical"]
+      ],
+      4: [
+        ["Applied Thermodynamics", 4],
+        ["Engineering Materials", 4],
+        ["Fluid Mechanics", 3],
+        ["Instrumentation & Control", 4],
+        ["Strength of Materials", 3],
+        ["MOOCs / SWAYAM / NPTEL Courses - 1", 2],
+        ["Fluid Mechanics LAB", 1.5, "Practical"],
+        ["Strength of Materials LAB", 1.5, "Practical"]
+      ],
+      5: [
+        ["Fluid Machinery", 3],
+        ["Heat Transfer", 3],
+        ["Kinematics of Machine", 4],
+        ["Manufacturing Processes", 3],
+        ["Summer Entrepreneurship – II", 6],
+        ["MOOCs / SWAYAM / NPTEL Courses – 2", 2],
+        ["Fluid Machinery Lab", 1.5, "Practical"],
+        ["Heat Transfer Lab", 1.5, "Practical"],
+        ["Manufacturing Processes Lab", 1.5, "Practical"]
+      ]
+    };
 
-const gradePointsTheory = [
-  { min: 90, point: 10 },
-  { min: 80, point: 9 },
-  { min: 70, point: 8 },
-  { min: 60, point: 7 },
-  { min: 50, point: 6 },
-  { min: 40, point: 5 },
-  { min: 0, point: 0 }
-];
+    function loadSubjects() {
+      const sem = document.getElementById("semester").value;
+      const form = document.getElementById("marksForm");
+      form.innerHTML = "";
+      document.getElementById("sgpaResult").innerHTML = "";
 
-const gradePointsPractical = [
-  { min: 45, point: 10 },
-  { min: 40, point: 9 },
-  { min: 35, point: 8 },
-  { min: 30, point: 7 },
-  { min: 25, point: 6 },
-  { min: 20, point: 5 },
-  { min: 0, point: 0 }
-];
+      if (!semesters[sem]) return;
 
-function loadSubjects() {
-  const table = document.getElementById("subject-table");
-  subjects.forEach((subj, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${subj.name}</td>
-      <td>${subj.credit}</td>
-      <td>${subj.type}</td>
-      <td><input type="number" min="0" max="${subj.type === 'Theory' ? 100 : 50}" id="marks-${index}" /></td>
-    `;
-    table.appendChild(row);
-  });
-}
-
-function getGradePoint(marks, type) {
-  const scale = type === "Theory" ? gradePointsTheory : gradePointsPractical;
-  return scale.find(g => marks >= g.min).point;
-}
-
-function calculateSGPA() {
-  let totalCredits = 0, totalPoints = 0;
-  subjects.forEach((subj, index) => {
-    const marks = parseFloat(document.getElementById(`marks-${index}`).value);
-    if (!isNaN(marks)) {
-      const gp = getGradePoint(marks, subj.type);
-      totalPoints += gp * subj.credit;
-      totalCredits += subj.credit;
+      semesters[sem].forEach((subject, index) => {
+        const [name, credit, type] = subject;
+        const maxMarks = type === "Practical" ? 50 : 100;
+        form.innerHTML += `
+          <div class="subject">
+            <label>${index + 1}. ${name} (Credit: ${credit})${type === "Practical" ? " [Practical]" : ""}</label>
+            <input type="number" min="0" max="${maxMarks}" placeholder="Enter marks out of ${maxMarks}" data-credit="${credit}" data-type="${type || 'Theory'}">
+          </div>
+        `;
+      });
     }
-  });
-  const sgpa = (totalPoints / totalCredits).toFixed(2);
-  document.getElementById("sgpa-result").innerText = `Your SGPA: ${sgpa}`;
-}
 
-loadSubjects();
-</script>
+    function getGrade(marks, type) {
+      const max = type === "Practical" ? 50 : 100;
+      const percent = (marks / max) * 100;
+
+      if (percent >= 90) return "O";
+      if (percent >= 80) return "A+";
+      if (percent >= 70) return "A";
+      if (percent >= 60) return "B+";
+      if (percent >= 50) return "B";
+      if (percent >= 40) return "C";
+      return "F";
+    }
+
+    function getGradePoint(grade) {
+      const map = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "F": 0 };
+      return map[grade] || 0;
+    }
+
+    function calculateSGPA() {
+      const inputs = document.querySelectorAll("#marksForm input");
+      let totalCredits = 0;
+      let weightedPoints = 0;
+
+      inputs.forEach(input => {
+        const marks = parseFloat(input.value);
+        const credit = parseFloat(input.dataset.credit);
+        const type = input.dataset.type;
+
+        if (!isNaN(marks)) {
+          const grade = getGrade(marks, type);
+          const point = getGradePoint(grade);
+          totalCredits += credit;
+          weightedPoints += point * credit;
+        }
+      });
+
+      const sgpa = (weightedPoints / totalCredits).toFixed(2);
+      document.getElementById("sgpaResult").innerHTML = `Your SGPA is: <strong>${sgpa}</strong>`;
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 20;
+
+      doc.setFontSize(16);
+      doc.text("BEU Semester Result Prediction", 20, y);
+      doc.setFontSize(12);
+      doc.text("Branch: Mechanical", 20, y + 10);
+      y += 20;
+
+      const inputs = document.querySelectorAll("#marksForm input");
+      inputs.forEach((input, index) => {
+        const label = input.previousElementSibling.innerText;
+        const marks = input.value || "N/A";
+        doc.text(`${index + 1}. ${label} - Marks: ${marks}`, 20, y);
+        y += 10;
+      });
+
+      const sgpaText = document.getElementById("sgpaResult").innerText;
+      if (sgpaText) {
+        doc.text(sgpaText, 20, y + 10);
+      }
+
+      doc.save("BEU_Mechanical_Result.pdf");
+    }
+  </script>
 </body>
 </html>
