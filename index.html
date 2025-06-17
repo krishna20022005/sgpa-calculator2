@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGPA Calculator - ME 1st Sem</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #e0e0e0;
+    }
+    input[type="number"] {
+      width: 60px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>SGPA Calculator - ME 1st Semester</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Subject</th>
+        <th>Credit</th>
+        <th>Type</th>
+        <th>Marks</th>
+      </tr>
+    </thead>
+    <tbody id="subject-table"></tbody>
+  </table>
+  <div style="text-align:center; margin-top:20px">
+    <button onclick="calculateSGPA()">Calculate SGPA</button>
+  </div>
+  <div class="result" id="sgpa-result"></div>
+</div>
+
+<script>
+const subjects = [
+  { name: "Engineering Chemistry", credit: 3, type: "Theory" },
+  { name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+  { name: "Communicative English", credit: 3, type: "Theory" },
+  { name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
+  { name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
+  { name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
+  { name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+  { name: "Communicative English Lab", credit: 1, type: "Practical" },
+  { name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
+  { name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
+];
+
+const gradePointsTheory = [
+  { min: 90, point: 10 },
+  { min: 80, point: 9 },
+  { min: 70, point: 8 },
+  { min: 60, point: 7 },
+  { min: 50, point: 6 },
+  { min: 40, point: 5 },
+  { min: 0, point: 0 }
+];
+
+const gradePointsPractical = [
+  { min: 45, point: 10 },
+  { min: 40, point: 9 },
+  { min: 35, point: 8 },
+  { min: 30, point: 7 },
+  { min: 25, point: 6 },
+  { min: 20, point: 5 },
+  { min: 0, point: 0 }
+];
+
+function loadSubjects() {
+  const table = document.getElementById("subject-table");
+  subjects.forEach((subj, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${subj.name}</td>
+      <td>${subj.credit}</td>
+      <td>${subj.type}</td>
+      <td><input type="number" min="0" max="${subj.type === 'Theory' ? 100 : 50}" id="marks-${index}" /></td>
+    `;
+    table.appendChild(row);
+  });
+}
+
+function getGradePoint(marks, type) {
+  const scale = type === "Theory" ? gradePointsTheory : gradePointsPractical;
+  return scale.find(g => marks >= g.min).point;
+}
+
+function calculateSGPA() {
+  let totalCredits = 0, totalPoints = 0;
+  subjects.forEach((subj, index) => {
+    const marks = parseFloat(document.getElementById(`marks-${index}`).value);
+    if (!isNaN(marks)) {
+      const gp = getGradePoint(marks, subj.type);
+      totalPoints += gp * subj.credit;
+      totalCredits += subj.credit;
+    }
+  });
+  const sgpa = (totalPoints / totalCredits).toFixed(2);
+  document.getElementById("sgpa-result").innerText = `Your SGPA: ${sgpa}`;
+}
+
+loadSubjects();
+</script>
+</body>
+</html>
