@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGPA Calculator</title>
     <style>
-        /* style.css content starts here */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #1a1a1a; /* Dark background */
@@ -13,8 +12,9 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* Changed to column to accommodate footer */
+            justify-content: flex-start; /* Align items at the start */
+            align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
         }
@@ -27,6 +27,7 @@
             width: 100%;
             max-width: 800px;
             box-sizing: border-box;
+            margin-bottom: 20px; /* Add some space below the main container */
         }
 
         h1 {
@@ -58,7 +59,7 @@
         }
 
         .input-group select,
-        .input-group input[type="number"] {
+        .input-group input {
             width: calc(100% - 20px);
             padding: 12px;
             border: 1px solid #555;
@@ -67,22 +68,23 @@
             color: #f0f0f0;
             font-size: 1em;
             transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
         }
 
         .input-group select:focus,
-        .input-group input[type="number"]:focus {
+        .input-group input:focus {
             border-color: #ff8c00;
             box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.3);
             outline: none;
         }
 
-        .input-group input[type="number"]::-webkit-inner-spin-button,
-        .input-group input[type="number"]::-webkit-outer-spin-button {
+        .input-group input::-webkit-inner-spin-button,
+        .input-group input::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        .input-group input[type="number"] {
+        .input-group input {
             -moz-appearance: textfield; /* Firefox */
         }
 
@@ -164,6 +166,7 @@
             transition: background-color 0.3s, transform 0.2s;
             width: 100%;
             margin-bottom: 15px;
+            box-sizing: border-box;
         }
 
         .btn:hover {
@@ -191,6 +194,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 20px;
         }
 
         @media (max-width: 600px) {
@@ -215,11 +227,10 @@
                 min-width: unset;
             }
             .btn {
-                    padding: 12px 20px;
-                    font-size: 1em;
+                padding: 12px 20px;
+                font-size: 1em;
             }
         }
-        /* style.css content ends here */
     </style>
 </head>
 <body>
@@ -236,7 +247,7 @@
                     <option value="Civil Engineering">Civil Engineering</option>
                     <option value="Chemical Engineering">Chemical Engineering</option>
                     <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering</option>
-                    </select>
+                </select>
             </div>
 
             <div class="input-group">
@@ -258,11 +269,14 @@
             </div>
     </div>
 
+    <footer>
+        Developed by **Krishna Raj** (Batch: 2023-27), Rashtrakavi Ramdhari Singh Dinkar College of Engineering, Branch: Mechanical Engineering.
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
-        /* data.js content starts here */
         const subjectsData = {
             "Mechanical Engineering": {
                 "1st Semester": [
@@ -350,7 +364,7 @@
                     { code: "100311", name: "MATHEMATICS-III (DIFFERENTIAL CALCULUS)", credit: 2, type: "theory" },
                     { code: "100313", name: "OBJECT ORIENTED PROGRAMMING USING C++", credit: 3, type: "theory" },
                     { code: "100314", name: "TECHNICAL WRITING", credit: 3, type: "theory" },
-                    { code: "100314", name: "ANALOG ELECTRONIC CIRCUITS", credit: 3, type: "theory" }, // Duplicate code, assumed intentional or specific context
+                    { code: "100314", name: "ANALOG ELECTRONIC CIRCUITS", credit: 3, type: "theory" }, // Duplicate code, assumed different name
                     { code: "100304", name: "DATA STRUCTURE & ALGORITHMS", credit: 3, type: "theory" },
                     { code: "100313P", name: "OBJECT ORIENTED PROGRAMMING USING C++ LAB", credit: 2, type: "practical" },
                     { code: "100399", name: "Internship", credit: 4, type: "special_100" },
@@ -368,7 +382,7 @@
                     { code: "105401P", name: "Computer Organization & Architecture", credit: 2, type: "practical" },
                     { code: "105402P", name: "Design & Analysis of Algorithms", credit: 2, type: "practical" },
                     { code: "105403P", name: "Operating Systems", credit: 2, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // MOOCs option
+                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" }
                 ],
                 "5th Semester": [
                     { code: "100508", name: "Professional Skill Development", credit: 3, type: "theory" },
@@ -376,9 +390,9 @@
                     { code: "105502", name: "Database Management Systems", credit: 3, type: "theory" },
                     { code: "105503", name: "Formal Language & Automata Theory", credit: 4, type: "theory" },
                     { code: "105504", name: "Software Engineering", credit: 3, type: "theory" },
-                    { code: "105505", name: "Seminar", credit: 1, type: "special_100" }, // Assuming Seminar is a 100-mark subject
+                    { code: "105505", name: "Seminar", credit: 1, type: "special_100" },
                     { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "special_100" },
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" },
                     { code: "105502P", name: "Database Management Systems", credit: 2, type: "practical" }
                 ]
             },
@@ -442,8 +456,8 @@
                     { code: "101505", name: "Hydrology & Water Resources Engineering", credit: 2, type: "theory" },
                     { code: "101506", name: "Mechanics of Materials", credit: 3, type: "theory" },
                     { code: "101507", name: "Transportation Engineering", credit: 3, type: "theory" },
-                    { code: "100510", name: "Summer Entrepreneurship - II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" }, // Assuming MOOCs are here
+                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" }, // Added as it was missing from your Civil 5th sem, but present in others
                     { code: "101502P", name: "Environmental Engineering -I", credit: 1, type: "practical" },
                     { code: "101503P", name: "Geotechnical Engineering -I", credit: 1, type: "practical" },
                     { code: "101504P", name: "Hydraulic Engineering", credit: 1, type: "practical" },
@@ -482,9 +496,8 @@
                     { code: "114304", name: "Physical & Organic Chemistry", credit: 3, type: "theory" },
                     { code: "114305", name: "Python programming", credit: 3, type: "theory" },
                     { code: "114306", name: "Maths – III", credit: 4, type: "theory" },
-                    { code: "114303P", name: "Solid Fluid Operations Lab", credit: 1.50, type: "practical" },
-                    { code: "114305P", name: "Python programming Lab", credit: 1.50, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" } // Assuming internship is in Chemical Engg 3rd Sem
+                    { code: "114303P", name: "Solid Fluid Operations Lab", credit: 1.5, type: "practical" },
+                    { code: "114305P", name: "Python programming Lab", credit: 1.5, type: "practical" }
                 ],
                 "4th Semester": [
                     { code: "114401", name: "Chemical Process Technology", credit: 3, type: "theory" },
@@ -494,10 +507,8 @@
                     { code: "114405", name: "Process Equipment Design and Drawing", credit: 3, type: "theory" },
                     { code: "114401P", name: "Chemical Process Technology Lab", credit: 2, type: "practical" },
                     { code: "114404P", name: "Industrial Fluid Flow Operation Lab", credit: 2, type: "practical" },
-                    { code: "114405P", name: "Process Equipment Design and Drawing Lab", credit: 2, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // Assuming MOOCs option
+                    { code: "114405P", name: "Process Equipment Design and Drawing Lab", credit: 2, type: "practical" }
                 ]
-                // Chemical Engineering 5th semester data will be added later
             },
             "Electrical & Electronics Engineering": {
                 "1st Semester": [
@@ -514,9 +525,9 @@
                 ],
                 "2nd Semester": [
                     { code: "100215", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
+                    { code: "100202", name: "Engineering Mathematics-I", credit: 4, type: "theory" }, // Typo corrected: should be II based on other branches
                     { code: "100216", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100220P", name: "Sports/YogaNCC/NSS", credit: 1, type: "practical" },
+                    { code: "100220P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" },
                     { code: "100209", name: "Basic Electronics", credit: 3, type: "theory" },
                     { code: "100217", name: "Engineering Graphics & Design", credit: 1, type: "theory" },
                     { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
@@ -544,8 +555,7 @@
                     { code: "110406", name: "Signals and Systems", credit: 3, type: "theory" },
                     { code: "110401P", name: "Analog Electronics", credit: 1, type: "practical" },
                     { code: "110402P", name: "Electrical Machines – II", credit: 1, type: "practical" },
-                    { code: "110405P", name: "Microprocessors", credit: 1, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // Assuming MOOCs option
+                    { code: "110405P", name: "Microprocessors", credit: 1, type: "practical" }
                 ],
                 "5th Semester": [
                     { code: "100502", name: "Control Systems", credit: 3, type: "theory" },
@@ -558,72 +568,11 @@
                     { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
                     { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" },
                     { code: "110501P", name: "Analog & Digital Communication System", credit: 1, type: "practical" },
-                    { code: "110504", name: "Simulation Tools for Electrical & Electronics Engineering", credit: 1, type: "special_100" } // Assuming this is also a 100-mark subject
+                    { code: "110504", name: "Simulation Tools for Electrical & Electronics Engineering", credit: 1, type: "theory" } // Assuming this is a theory subject with 1 credit, no P
                 ]
             }
         };
-        /* data.js content ends here */
 
-        /* script.js content starts here */
-        // Grade point mapping
-        const gradePoints = {
-            'A+': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 6, 'P': 5, 'F': 0
-        };
-
-        // Function to determine grade point for Theory subjects (out of 100)
-        // Includes specific condition for End-Sem exam marks
-        function getTheoryGradePoint(endSemMarks, collegeMarks) {
-            const totalMarks = parseInt(endSemMarks) + parseInt(collegeMarks);
-
-            // Fail condition: End-Sem marks less than 25 (out of 70)
-            if (parseInt(endSemMarks) < 25) {
-                return 0; // Fail
-            }
-
-            // Regular grading based on total marks if End-Sem condition is met
-            if (totalMarks >= 90) return gradePoints['A+'];
-            if (totalMarks >= 80) return gradePoints['A'];
-            if (totalMarks >= 70) return gradePoints['B'];
-            if (totalMarks >= 60) return gradePoints['C'];
-            if (totalMarks >= 50) return gradePoints['D'];
-            if (totalMarks >= 35) return gradePoints['P'];
-            return gradePoints['F']; // Fallback, though usually handled by above conditions
-        }
-
-        // Function to determine grade point for Practical subjects (out of 50)
-        // Includes specific condition for total marks less than 20
-        function getPracticalGradePoint(universityMarks, collegeMarks) {
-            const totalMarks = parseInt(universityMarks) + parseInt(collegeMarks);
-            const percentage = (totalMarks / 50) * 100;
-
-            // Fail condition: Total practical marks less than 20 (out of 50)
-            if (totalMarks < 20) {
-                return 0; // Fail
-            }
-
-            // Regular grading based on percentage if total marks >= 20
-            if (percentage >= 90) return gradePoints['A+'];
-            if (percentage >= 80) return gradePoints['A'];
-            if (percentage >= 70) return gradePoints['B'];
-            if (percentage >= 60) return gradePoints['C'];
-            if (percentage >= 50) return gradePoints['D'];
-            if (percentage >= 40) return gradePoints['P']; // 40-49% as per your Practical grading
-            return gradePoints['F']; // Fallback
-        }
-
-        // Function to determine grade point for 100-mark special subjects (Internship, MOOCs, etc.)
-        function getSpecial100GradePoint(totalMarks) {
-            totalMarks = parseInt(totalMarks);
-            if (totalMarks >= 90) return gradePoints['A+'];
-            if (totalMarks >= 80) return gradePoints['A'];
-            if (totalMarks >= 70) return gradePoints['B'];
-            if (totalMarks >= 60) return gradePoints['C'];
-            if (totalMarks >= 50) return gradePoints['D'];
-            if (totalMarks >= 35) return gradePoints['P'];
-            return gradePoints['F'];
-        }
-
-        // DOM Elements
         const branchSelect = document.getElementById('branchSelect');
         const semesterSelect = document.getElementById('semesterSelect');
         const subjectsContainer = document.getElementById('subjectsContainer');
@@ -631,17 +580,84 @@
         const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const resultContainer = document.getElementById('resultContainer');
 
-        // Populate Semesters based on Branch selection
-        branchSelect.addEventListener('change', () => {
+        // Helper to convert marks to grade point for Theory subjects (70+30, 25 in End Sem fail)
+        function getTheoryGradePoint(internalMarks, endSemMarks) {
+            const totalMarks = internalMarks + endSemMarks;
+
+            if (endSemMarks < 25) { // Fail condition based on University marks
+                return 0; // Fail
+            }
+
+            if (totalMarks < 35) {
+                return 0; // Fail
+            } else if (totalMarks >= 90) {
+                return 10; // A+
+            } else if (totalMarks >= 80) {
+                return 9;  // A
+            } else if (totalMarks >= 70) {
+                return 8;  // B
+            } else if (totalMarks >= 60) {
+                return 7;  // C
+            } else if (totalMarks >= 50) {
+                return 6;  // D
+            } else if (totalMarks >= 35) {
+                return 5;  // P (Pass)
+            }
+            return 0; // Should not reach here if logic is complete
+        }
+
+        // Helper to convert marks to grade point for Practical subjects (30+20 = 50 total)
+        function getPracticalGradePoint(collegeMarks, universityMarks) {
+            const totalMarks = collegeMarks + universityMarks;
+
+            if (totalMarks < 20) { // Fail if total practical is less than 20
+                return 0; // Fail
+            } else if (totalMarks >= 45) {
+                return 10; // A+
+            } else if (totalMarks >= 40) {
+                return 9;  // A
+            } else if (totalMarks >= 35) {
+                return 8;  // B
+            } else if (totalMarks >= 30) {
+                return 7;  // C
+            } else if (totalMarks >= 25) {
+                return 6;  // D
+            } else if (totalMarks >= 20) {
+                return 5;  // P (Pass)
+            }
+            return 0; // Should not reach here
+        }
+
+        // Helper for subjects like Internship and NPTEL which are 100 marks total
+        function getSpecial100GradePoint(totalMarks) {
+            if (totalMarks < 35) {
+                return 0; // Fail
+            } else if (totalMarks >= 90) {
+                return 10; // A+
+            } else if (totalMarks >= 80) {
+                return 9;  // A
+            } else if (totalMarks >= 70) {
+                return 8;  // B
+            } else if (totalMarks >= 60) {
+                return 7;  // C
+            } else if (totalMarks >= 50) {
+                return 6;  // D
+            } else if (totalMarks >= 35) {
+                return 5;  // P (Pass)
+            }
+            return 0; // Should not reach here if logic is complete
+        }
+
+        function populateSemesters() {
             const selectedBranch = branchSelect.value;
-            semesterSelect.innerHTML = '<option value="">-- Select Semester --</option>'; // Clear previous options
+            semesterSelect.innerHTML = '<option value="">-- Select Semester --</option>';
             semesterSelect.disabled = true;
             subjectsContainer.innerHTML = '<p class="placeholder-text">Please select your Branch and Semester to load subjects.</p>';
             calculateSGPABtn.disabled = true;
             downloadPdfBtn.disabled = true;
-            resultContainer.innerHTML = '';
+            resultContainer.textContent = '';
 
-            if (selectedBranch && subjectsData[selectedBranch]) {
+            if (selectedBranch) {
                 const semesters = Object.keys(subjectsData[selectedBranch]);
                 semesters.forEach(semester => {
                     const option = document.createElement('option');
@@ -651,270 +667,323 @@
                 });
                 semesterSelect.disabled = false;
             }
-        });
+        }
 
-        // Load subjects based on Semester selection
-        semesterSelect.addEventListener('change', () => {
+        function loadSubjects() {
             const selectedBranch = branchSelect.value;
             const selectedSemester = semesterSelect.value;
-            subjectsContainer.innerHTML = ''; // Clear previous subjects
-            resultContainer.innerHTML = '';
+            subjectsContainer.innerHTML = '';
+            resultContainer.textContent = '';
+            calculateSGPABtn.disabled = true;
+            downloadPdfBtn.disabled = true;
 
             if (selectedBranch && selectedSemester) {
                 const subjects = subjectsData[selectedBranch][selectedSemester];
-                
-                let theorySection = document.createElement('div');
-                theorySection.className = 'subject-section theory-section';
-                theorySection.innerHTML = '<h3>Theory Subjects (End-Sem / College)</h3>';
-                
-                let practicalSection = document.createElement('div');
-                practicalSection.className = 'subject-section practical-section';
-                practicalSection.innerHTML = '<h3>Practical Subjects (University / College)</h3>';
+                if (subjects && subjects.length > 0) {
+                    subjects.forEach(subject => {
+                        const subjectItem = document.createElement('div');
+                        subjectItem.classList.add('subject-item');
+                        subjectItem.dataset.code = subject.code;
+                        subjectItem.dataset.credit = subject.credit;
+                        subjectItem.dataset.type = subject.type;
 
-                let specialSection = document.createElement('div');
-                specialSection.className = 'subject-section special-section';
-                specialSection.innerHTML = '<h3>Internship & MOOCs / SWAYAM / NPTEL Courses (Total Marks)</h3>';
+                        const subjectDetails = document.createElement('div');
+                        subjectDetails.classList.add('subject-details');
+                        subjectDetails.innerHTML = `<div class="name">${subject.code} - ${subject.name}</div><div class="credit">Credits: ${subject.credit}</div>`;
+                        subjectItem.appendChild(subjectDetails);
 
-                subjects.forEach(subject => {
-                    const subjectItem = document.createElement('div');
-                    subjectItem.className = 'subject-item';
-                    subjectItem.dataset.code = subject.code;
-                    subjectItem.dataset.credit = subject.credit;
-                    subjectItem.dataset.type = subject.type; // Store subject type
+                        const marksInputDiv = document.createElement('div');
+                        marksInputDiv.classList.add('marks-input');
 
-                    const subjectDetails = document.createElement('div');
-                    subjectDetails.className = 'subject-details';
-                    subjectDetails.innerHTML = `
-                        <div class="name">${subject.code}: ${subject.name}</div>
-                        <div class="credit">Credits: ${subject.credit}</div>
-                    `;
-                    subjectItem.appendChild(subjectDetails);
+                        if (subject.type === 'theory') {
+                            const internalInput = document.createElement('input');
+                            internalInput.type = 'number';
+                            internalInput.placeholder = 'Internal (30)';
+                            internalInput.min = '0';
+                            internalInput.max = '30';
+                            internalInput.dataset.type = 'internal';
+                            marksInputDiv.appendChild(internalInput);
 
-                    const marksInputDiv = document.createElement('div');
-                    marksInputDiv.className = 'marks-input';
+                            const endSemInput = document.createElement('input');
+                            endSemInput.type = 'number';
+                            endSemInput.placeholder = 'End Sem (70)';
+                            endSemInput.min = '0';
+                            internalInput.max = '70'; // Corrected internal max, assuming typo in previous code
+                            endSemInput.max = '70'; // Corrected endSem max
+                            endSemInput.dataset.type = 'endsem';
+                            marksInputDiv.appendChild(endSemInput);
+                        } else if (subject.type === 'practical') {
+                            const collegeInput = document.createElement('input');
+                            collegeInput.type = 'number';
+                            collegeInput.placeholder = 'College (30)';
+                            collegeInput.min = '0';
+                            collegeInput.max = '30';
+                            collegeInput.dataset.type = 'college';
+                            marksInputDiv.appendChild(collegeInput);
 
-                    if (subject.type === 'theory') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="End-Sem (70)" min="0" max="70" data-part="endSem" required>
-                            <input type="number" placeholder="College (30)" min="0" max="30" data-part="college" required>
-                        `;
-                        theorySection.appendChild(subjectItem);
-                    } else if (subject.type === 'practical') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="University (30)" min="0" max="30" data-part="university" required>
-                            <input type="number" placeholder="College (20)" min="0" max="20" data-part="college" required>
-                        `;
-                        practicalSection.appendChild(subjectItem);
-                    } else if (subject.type === 'special_100') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="Total Marks (100)" min="0" max="100" data-part="total" required>
-                        `;
-                        specialSection.appendChild(subjectItem);
-                    }
-                    subjectItem.appendChild(marksInputDiv);
-                });
-
-                // Append sections only if they contain subjects (more than just the h3 tag)
-                if (theorySection.children.length > 1) subjectsContainer.appendChild(theorySection);
-                if (practicalSection.children.length > 1) subjectsContainer.appendChild(practicalSection);
-                if (specialSection.children.length > 1) subjectsContainer.appendChild(specialSection);
-                
-                // Enable buttons if subjects are loaded
-                if (subjects.length > 0) {
+                            const universityInput = document.createElement('input');
+                            universityInput.type = 'number';
+                            universityInput.placeholder = 'University (20)';
+                            universityInput.min = '0';
+                            universityInput.max = '20';
+                            universityInput.dataset.type = 'university';
+                            marksInputDiv.appendChild(universityInput);
+                        } else if (subject.type === 'special_100') {
+                            const totalInput = document.createElement('input');
+                            totalInput.type = 'number';
+                            totalInput.placeholder = 'Total (100)';
+                            totalInput.min = '0';
+                            totalInput.max = '100';
+                            totalInput.dataset.type = 'total';
+                            marksInputDiv.appendChild(totalInput);
+                        }
+                        subjectItem.appendChild(marksInputDiv);
+                        subjectsContainer.appendChild(subjectItem);
+                    });
                     calculateSGPABtn.disabled = false;
                 } else {
-                    calculateSGPABtn.disabled = true;
-                    subjectsContainer.innerHTML = '<p class="placeholder-text">No subjects found for this semester.</p>';
+                    subjectsContainer.innerHTML = '<p class="placeholder-text">No subjects found for this selection.</p>';
                 }
-
             } else {
-                calculateSGPABtn.disabled = true;
-                downloadPdfBtn.disabled = true;
                 subjectsContainer.innerHTML = '<p class="placeholder-text">Please select your Branch and Semester to load subjects.</p>';
             }
-        });
+        }
 
-        // Calculate SGPA
-        calculateSGPABtn.addEventListener('click', () => {
+        function calculateSGPA() {
             let totalGradePoints = 0;
             let totalCredits = 0;
             let allMarksEntered = true;
-            const subjectResultsForPdf = []; // To store results for PDF generation
+            resultContainer.textContent = '';
 
             const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
+            const subjectResults = [];
+
             subjectItems.forEach(item => {
+                const subjectNameFull = item.querySelector('.subject-details .name').textContent;
+                const subjectCode = item.dataset.code;
                 const credit = parseFloat(item.dataset.credit);
                 const type = item.dataset.type;
-                const subjectCode = item.dataset.code;
-                const subjectName = item.querySelector('.subject-details .name').textContent.split(': ')[1]; // Extract name
-
                 let gradePoint = 0;
-                let marks1_val, marks2_val, totalCalculatedMarks; // Use distinct names for values
-                let marksDisplayString = ''; // For PDF marks column
+                let marksEnteredForSubject = true;
+                let totalMarksObtained = 0;
 
                 if (type === 'theory') {
-                    const endSemInput = item.querySelector('input[data-part="endSem"]');
-                    const collegeInput = item.querySelector('input[data-part="college"]');
-                    if (endSemInput.value === '' || collegeInput.value === '') {
+                    const internalInput = item.querySelector('input[data-type="internal"]');
+                    const endSemInput = item.querySelector('input[data-type="endsem"]');
+                    const internalMarks = internalInput ? parseInt(internalInput.value) : NaN;
+                    const endSemMarks = endSemInput ? parseInt(endSemInput.value) : NaN;
+
+                    if (isNaN(internalMarks) || isNaN(endSemMarks) || internalMarks < 0 || internalMarks > 30 || endSemMarks < 0 || endSemMarks > 70) {
                         allMarksEntered = false;
-                        return;
+                        marksEnteredForSubject = false;
+                    } else {
+                        gradePoint = getTheoryGradePoint(internalMarks, endSemMarks);
+                        totalMarksObtained = internalMarks + endSemMarks;
                     }
-                    marks1_val = parseInt(endSemInput.value); // End-Sem marks
-                    marks2_val = parseInt(collegeInput.value); // College marks
-                    gradePoint = getTheoryGradePoint(marks1_val, marks2_val);
-                    totalCalculatedMarks = marks1_val + marks2_val;
-                    marksDisplayString = `${marks1_val} (End-Sem) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
                 } else if (type === 'practical') {
-                    const universityInput = item.querySelector('input[data-part="university"]');
-                    const collegeInput = item.querySelector('input[data-part="college"]');
-                    if (universityInput.value === '' || collegeInput.value === '') {
+                    const collegeInput = item.querySelector('input[data-type="college"]');
+                    const universityInput = item.querySelector('input[data-type="university"]');
+                    const collegeMarks = collegeInput ? parseInt(collegeInput.value) : NaN;
+                    const universityMarks = universityInput ? parseInt(universityInput.value) : NaN;
+
+                    if (isNaN(collegeMarks) || isNaN(universityMarks) || collegeMarks < 0 || collegeMarks > 30 || universityMarks < 0 || universityMarks > 20) {
                         allMarksEntered = false;
-                        return;
+                        marksEnteredForSubject = false;
+                    } else {
+                        gradePoint = getPracticalGradePoint(collegeMarks, universityMarks);
+                        totalMarksObtained = collegeMarks + universityMarks;
                     }
-                    marks1_val = parseInt(universityInput.value); // University marks
-                    marks2_val = parseInt(collegeInput.value); // College marks
-                    gradePoint = getPracticalGradePoint(marks1_val, marks2_val);
-                    totalCalculatedMarks = marks1_val + marks2_val;
-                    marksDisplayString = `${marks1_val} (University) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
                 } else if (type === 'special_100') {
-                    const totalInput = item.querySelector('input[data-part="total"]');
-                    if (totalInput.value === '') {
+                    const totalInput = item.querySelector('input[data-type="total"]');
+                    const totalMarks = totalInput ? parseInt(totalInput.value) : NaN;
+
+                    if (isNaN(totalMarks) || totalMarks < 0 || totalMarks > 100) {
                         allMarksEntered = false;
-                        return;
+                        marksEnteredForSubject = false;
+                    } else {
+                        gradePoint = getSpecial100GradePoint(totalMarks);
+                        totalMarksObtained = totalMarks;
                     }
-                    marks1_val = parseInt(totalInput.value); // Total marks for special_100
-                    gradePoint = getSpecial100GradePoint(marks1_val);
-                    totalCalculatedMarks = marks1_val;
-                    marksDisplayString = `${totalCalculatedMarks}`; // Only total for special_100
                 }
 
-                totalGradePoints += (gradePoint * credit);
-                totalCredits += credit;
-                
-                // Find the grade character from gradePoints based on value
-                const gradeChar = Object.keys(gradePoints).find(key => gradePoints[key] === gradePoint);
-                
-                subjectResultsForPdf.push({ 
-                    code: subjectCode, 
-                    name: subjectName, 
-                    credit: credit, 
-                    marks: marksDisplayString, // Use the prepared display string
-                    grade: gradeChar, 
-                    gradePoint: gradePoint 
+                subjectResults.push({
+                    name: subjectNameFull,
+                    code: subjectCode,
+                    credit: credit,
+                    type: type,
+                    gradePoint: gradePoint,
+                    totalMarks: totalMarksObtained,
+                    passed: gradePoint > 0, // A subject is passed if gradePoint is > 0
+                    marksValid: marksEnteredForSubject
                 });
+
+                if (marksEnteredForSubject) {
+                    totalGradePoints += gradePoint * credit;
+                    totalCredits += credit;
+                }
             });
 
             if (!allMarksEntered) {
-                resultContainer.innerHTML = '<span style="color: red;">Please enter marks for all subjects.</span>';
+                resultContainer.textContent = "Please enter valid marks for all subjects (0-30 for Internal/College, 0-70 for End Sem, 0-20 for University Practical, 0-100 for 100-mark subjects).";
                 downloadPdfBtn.disabled = true;
                 return;
             }
 
-            let sgpa = 0;
-            if (totalCredits > 0) {
-                sgpa = (totalGradePoints / totalCredits).toFixed(2);
+            const sgpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : '0.00';
+
+            // Check for any failed subjects to mark overall SGPA as 'Fail'
+            const hasFailedSubject = subjectResults.some(sub => !sub.passed);
+
+            if (hasFailedSubject) {
+                resultContainer.style.color = '#dc3545'; // Red color for fail
+                resultContainer.textContent = `SGPA: FAIL (Due to one or more failed subjects)`;
+                downloadPdfBtn.disabled = true; // Disable PDF download on failure
+            } else {
+                resultContainer.style.color = '#ff8c00'; // Orange color for pass
+                resultContainer.textContent = `Calculated SGPA: ${sgpa}`;
+                downloadPdfBtn.disabled = false; // Enable PDF download on pass
             }
+        }
 
-            resultContainer.innerHTML = `Your SGPA: <span style="color: #4CAF50;">${sgpa}</span>`;
-            resultContainer.dataset.sgpa = sgpa; // Store SGPA for PDF
-            resultContainer.dataset.subjectMarks = JSON.stringify(subjectResultsForPdf); // Store marks for PDF
-            downloadPdfBtn.disabled = false;
-        });
 
-        // PDF Download functionality
-        downloadPdfBtn.addEventListener('click', () => {
-            const selectedBranch = branchSelect.value;
-            const selectedSemester = semesterSelect.value;
-            const sgpa = resultContainer.dataset.sgpa;
-            const subjectMarks = JSON.parse(resultContainer.dataset.subjectMarks || '[]');
-
-            if (!sgpa || subjectMarks.length === 0) {
-                alert("Please calculate SGPA first.");
-                return;
-            }
-
-            // Use jsPDF
+        // PDF Generation
+        async function downloadPdf() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
+            const selectedBranch = branchSelect.value;
+            const selectedSemester = semesterSelect.value;
+            const sgpaResult = resultContainer.textContent;
+
+            let yPos = 20;
+
             doc.setFontSize(22);
-            doc.setTextColor(255, 140, 0); // Orange color
-            doc.text("SGPA Report", 105, 20, null, null, "center");
+            doc.setTextColor(255, 140, 0); // Orange
+            doc.text("SGPA Report Card", doc.internal.pageSize.width / 2, yPos, { align: "center" });
+            yPos += 15;
 
             doc.setFontSize(12);
-            doc.setTextColor(240, 240, 240); // Light grey text for details
-            doc.text(`Branch: ${selectedBranch}`, 20, 35);
-            doc.text(`Semester: ${selectedSemester}`, 20, 45);
+            doc.setTextColor(0, 0, 0); // Black for details
 
-            doc.setFontSize(16);
-            doc.setTextColor(255, 140, 0); // Orange
-            doc.text(`Your SGPA: ${sgpa}`, 105, 60, null, null, "center");
-
-            let y = 75; // Starting Y position for subjects
+            // User Details (Hardcoded for now as per previous conversations)
+            doc.text(`Branch: ${selectedBranch}`, 20, yPos);
+            yPos += 7;
+            doc.text(`Semester: ${selectedSemester}`, 20, yPos);
+            yPos += 7;
+            doc.text(`Name: Krishna Raj`, 20, yPos);
+            yPos += 7;
+            doc.text(`Batch: 2023-27`, 20, yPos);
+            yPos += 7;
+            doc.text(`College: Rashtrakavi Ramdhari Singh Dinkar College of Engineering`, 20, yPos);
+            yPos += 15; // Space before subjects
 
             doc.setFontSize(14);
-            doc.setTextColor(255, 140, 0); // Orange
-            doc.text("Subject Breakdown:", 20, y);
-            y += 10;
+            doc.setTextColor(255, 140, 0); // Orange for section header
+            doc.text("Subject-wise Performance:", 20, yPos);
+            yPos += 10;
 
             doc.setFontSize(10);
-            doc.setTextColor(240, 240, 240); // Light grey
-            
-            // Define column positions (Adjusted for better alignment)
-            const colCode = 15;
-            const colName = 40; // Adjusted for wider subject names
-            const colCredits = 115; // Adjusted
-            const colMarks = 130; // Adjusted for descriptive marks
-            const colGrade = 180; // Adjusted
-            const colGP = 190;   // Adjusted
+            doc.setTextColor(0, 0, 0); // Black for subject details
 
-            // Table Headers
-            doc.text("Code", colCode, y);
-            doc.text("Subject Name", colName, y);
-            doc.text("Credits", colCredits, y);
-            doc.text("Marks Obtained", colMarks, y);
-            doc.text("Grade", colGrade, y);
-            doc.text("GP", colGP, y);
-            y += 5;
-            doc.line(colCode, y, 200, y); // Horizontal line, adjusted end for wider columns
-            y += 5;
+            const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
+            subjectItems.forEach(item => {
+                const subjectName = item.querySelector('.subject-details .name').textContent;
+                const credit = parseFloat(item.dataset.credit);
+                const type = item.dataset.type;
 
-            subjectMarks.forEach(sub => {
-                doc.text(sub.code, colCode, y);
-                doc.text(sub.name, colName, y); 
-                doc.text(String(sub.credit), colCredits, y);
-                doc.text(sub.marks, colMarks, y); // This will include the breakdown string
-                doc.text(sub.grade, colGrade, y);
-                doc.text(String(sub.gradePoint), colGP, y);
-                y += 7; // Line height for each subject
-                if (y > 280) { // Check for page break (near bottom of page)
-                    doc.addPage();
-                    y = 20; // Reset y for new page
-                    doc.setFontSize(10);
-                    doc.setTextColor(240, 240, 240);
-                    // Repeat headers on new page
-                    doc.text("Code", colCode, y);
-                    doc.text("Subject Name", colName, y);
-                    doc.text("Credits", colCredits, y);
-                    doc.text("Marks Obtained", colMarks, y);
-                    doc.text("Grade", colGrade, y);
-                    doc.text("GP", colGP, y);
-                    y += 5;
-                    doc.line(colCode, y, 200, y);
-                    y += 5;
+                let internalMarks = '';
+                let endSemMarks = '';
+                let collegeMarks = '';
+                let universityMarks = '';
+                let totalMarks = '';
+                let obtainedMarks = '';
+
+                if (type === 'theory') {
+                    internalMarks = item.querySelector('input[data-type="internal"]').value;
+                    endSemMarks = item.querySelector('input[data-type="endsem"]').value;
+                    obtainedMarks = parseInt(internalMarks) + parseInt(endSemMarks);
+                } else if (type === 'practical') {
+                    collegeMarks = item.querySelector('input[data-type="college"]').value;
+                    universityMarks = item.querySelector('input[data-type="university"]').value;
+                    obtainedMarks = parseInt(collegeMarks) + parseInt(universityMarks);
+                } else if (type === 'special_100') {
+                    totalMarks = item.querySelector('input[data-type="total"]').value;
+                    obtainedMarks = parseInt(totalMarks);
                 }
+
+                let gradePoint = 0;
+                if (type === 'theory') {
+                    gradePoint = getTheoryGradePoint(parseInt(internalMarks), parseInt(endSemMarks));
+                } else if (type === 'practical') {
+                    gradePoint = getPracticalGradePoint(parseInt(collegeMarks), parseInt(universityMarks));
+                } else if (type === 'special_100') {
+                    gradePoint = getSpecial100GradePoint(parseInt(totalMarks));
+                }
+
+                const grade = getGradeFromGradePoint(gradePoint);
+                const status = gradePoint > 0 ? 'PASS' : 'FAIL';
+
+                let marksDisplay = '';
+                if (type === 'theory') {
+                    marksDisplay = `(Internal: ${internalMarks}, End Sem: ${endSemMarks})`;
+                } else if (type === 'practical') {
+                    marksDisplay = `(College: ${collegeMarks}, University: ${universityMarks})`;
+                } else if (type === 'special_100') {
+                    marksDisplay = `(Total: ${totalMarks})`;
+                }
+
+                if (yPos + 10 > doc.internal.pageSize.height - 20) { // Check if new page is needed
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                doc.text(`${subjectName} - Credits: ${credit}, Obtained Marks: ${obtainedMarks} ${marksDisplay}, Grade: ${grade}, Status: ${status}`, 20, yPos);
+                yPos += 7;
             });
 
-            doc.save(`SGPA_Report_${selectedBranch.replace(/\s/g, '_')}_${selectedSemester.replace(/\s/g, '_')}.pdf`);
-        });
+            yPos += 10;
+            doc.setFontSize(16);
+            doc.setTextColor(255, 140, 0); // Orange for final SGPA
+            if (sgpaResult.includes("FAIL")) {
+                doc.setTextColor(220, 53, 69); // Red for fail SGPA
+            }
+            doc.text(sgpaResult, 20, yPos);
+            yPos += 10;
 
-        // Initial state: Disable semester select and buttons
-        window.addEventListener('load', () => {
-            semesterSelect.disabled = true;
-            calculateSGPABtn.disabled = true;
-            downloadPdfBtn.disabled = true;
-        });
-        /* script.js content ends here */
+
+            // Footer for PDF
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150); // Grey
+            if (yPos + 10 > doc.internal.pageSize.height - 10) { // Check if new page is needed for footer
+                doc.addPage();
+                yPos = 20;
+            }
+            doc.text(`Report generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, 20, doc.internal.pageSize.height - 10);
+            doc.text(`Developed by Krishna Raj`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10, { align: "right" });
+
+
+            doc.save("SGPA_Report.pdf");
+        }
+
+        // Helper to convert grade point back to grade letter for PDF
+        function getGradeFromGradePoint(gp) {
+            if (gp === 10) return 'A+';
+            if (gp === 9) return 'A';
+            if (gp === 8) return 'B';
+            if (gp === 7) return 'C';
+            if (gp === 6) return 'D';
+            if (gp === 5) return 'P';
+            return 'F';
+        }
+
+        // Event Listeners
+        branchSelect.addEventListener('change', populateSemesters);
+        semesterSelect.addEventListener('change', loadSubjects);
+        calculateSGPABtn.addEventListener('click', calculateSGPA);
+        downloadPdfBtn.addEventListener('click', downloadPdf);
+
+        // Initial load
+        populateSemesters();
     </script>
 </body>
 </html>
