@@ -1,228 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BEU Result Prediction - Mechanical</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 20px;
-    }
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-    h1, h2 {
-      text-align: center;
-      color: orange;
-    }
+const gradePoint = (univ, college, isTheory) => {
+  if (isTheory) {
+    const total = univ + college;
+    if (univ < 25 || total < 35) return 0;
+    if (total >= 90) return 10;
+    if (total >= 80) return 9;
+    if (total >= 70) return 8;
+    if (total >= 60) return 7;
+    if (total >= 50) return 6;
+    if (total >= 35) return 5;
+  } else {
+    const total = univ + college;
+    if (total < 20) return 0;
+    if (total >= 45) return 10;
+    if (total >= 40) return 9;
+    if (total >= 35) return 8;
+    if (total >= 30) return 7;
+    if (total >= 25) return 6;
+    if (total >= 20) return 5;
+  }
+  return 0;
+};
 
-    select, input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-    }
+const SGPA_Calculator = () => {
+  const [subjects, setSubjects] = useState([
+    // Sample subjects, replace dynamically as per branch/semester
+    { code: "100301", name: "Biology", credit: 3, isTheory: true, univ: 0, college: 0 },
+    { code: "100309P", name: "Engg Mechanics Lab", credit: 1, isTheory: false, univ: 0, college: 0 },
+  ]);
 
-    .subject {
-      margin-bottom: 15px;
-    }
+  const handleChange = (index, field, value) => {
+    const newSubjects = [...subjects];
+    newSubjects[index][field] = parseInt(value) || 0;
+    setSubjects(newSubjects);
+  };
 
-    button {
-      background-color: orange;
-      color: black;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 5px;
-    }
+  const calculateSGPA = () => {
+    let totalCredit = 0;
+    let totalPoints = 0;
 
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
+    subjects.forEach((subj) => {
+      const gp = gradePoint(subj.univ, subj.college, subj.isTheory);
+      totalPoints += gp * subj.credit;
+      totalCredit += subj.credit;
+    });
 
-    #sgpaResult {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 20px;
-      color: orange;
-    }
-  </style>
-</head>
-<body>
-  <h1>BEU Semester Result Prediction</h1>
-  <h2>For Mechanical Branch</h2>
+    return (totalPoints / totalCredit).toFixed(2);
+  };
 
-  <label for="semester">Select Semester:</label>
-  <select id="semester" onchange="loadSubjects()">
-    <option value="">--Select--</option>
-    <option value="1">1st Semester</option>
-    <option value="2">2nd Semester</option>
-    <option value="3">3rd Semester</option>
-    <option value="4">4th Semester</option>
-    <option value="5">5th Semester</option>
-  </select>
+  return (
+    <div className="bg-black text-orange-400 min-h-screen p-6">
+      <h1 className="text-2xl font-bold mb-4">BEU Semester Result Prediction</h1>
+      {subjects.map((subj, index) => (
+        <Card key={index} className="mb-4 bg-gray-900">
+          <CardContent className="p-4">
+            <p className="mb-2 font-semibold">
+              {subj.code} - {subj.name} ({subj.credit} Credits)
+            </p>
+            <div className="flex gap-4">
+              <Input
+                placeholder="University Marks"
+                type="number"
+                onChange={(e) => handleChange(index, "univ", e.target.value)}
+                className="w-40"
+              />
+              <Input
+                placeholder="College Marks"
+                type="number"
+                onChange={(e) => handleChange(index, "college", e.target.value)}
+                className="w-40"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+      <Button onClick={() => alert(`Your SGPA is: ${calculateSGPA()}`)}>Calculate SGPA</Button>
+    </div>
+  );
+};
 
-  <form id="marksForm"></form>
-  <div id="sgpaResult"></div>
-
-  <div class="btn-container">
-    <button onclick="calculateSGPA()">Calculate SGPA</button>
-    <button onclick="downloadPDF()">Download PDF</button>
-  </div>
-
-  <script>
-    const semesters = {
-      1: [
-        ["Engineering Chemistry", 3],
-        ["Engineering Mathematics-I", 4],
-        ["Communicative English", 3],
-        ["Engineering Graphics and Design", 1],
-        ["Basic Electrical Engineering", 3],
-        ["Sports/Yoga/NCC/NSS", 1, "Practical"],
-        ["Engineering Chemistry Lab", 1, "Practical"],
-        ["Communicative English Lab", 1, "Practical"],
-        ["Engineering Graphics and Design Lab", 2, "Practical"],
-        ["Basic Electrical Engineering Lab", 1, "Practical"]
-      ],
-      2: [
-        ["Engineering Physics", 3],
-        ["Engineering Mathematics-II", 4],
-        ["Programming for Problem Solving", 3],
-        ["Swachha Bharat Mission", 1, "Practical"],
-        ["Workshop Practices", 2],
-        ["Elements of Mechanical Engineering", 3],
-        ["Engineering Physics Lab", 1, "Practical"],
-        ["Programming for Problem Solving Lab", 1, "Practical"],
-        ["Workshop Practices Lab", 1, "Practical"],
-        ["Elements of Mechanical Engineering Lab", 1, "Practical"]
-      ],
-      3: [
-        ["BIOLOGY FOR ENGINEERS", 3],
-        ["BASIC ELECTRONICS ENGINEERING", 4],
-        ["ENGINEERING MECHANICS", 3],
-        ["MATHEMATICS-III", 4],
-        ["THERMODYNAMICS", 4],
-        ["ENGINEERING MECHANICS LAB", 1, "Practical"],
-        ["Internship", 4],
-        ["Machine Drawing", 2, "Practical"]
-      ],
-      4: [
-        ["Applied Thermodynamics", 4],
-        ["Engineering Materials", 4],
-        ["Fluid Mechanics", 3],
-        ["Instrumentation & Control", 4],
-        ["Strength of Materials", 3],
-        ["MOOCs / SWAYAM / NPTEL Courses - 1", 2],
-        ["Fluid Mechanics LAB", 1.5, "Practical"],
-        ["Strength of Materials LAB", 1.5, "Practical"]
-      ],
-      5: [
-        ["Fluid Machinery", 3],
-        ["Heat Transfer", 3],
-        ["Kinematics of Machine", 4],
-        ["Manufacturing Processes", 3],
-        ["Summer Entrepreneurship – II", 6],
-        ["MOOCs / SWAYAM / NPTEL Courses – 2", 2],
-        ["Fluid Machinery Lab", 1.5, "Practical"],
-        ["Heat Transfer Lab", 1.5, "Practical"],
-        ["Manufacturing Processes Lab", 1.5, "Practical"]
-      ]
-    };
-
-    function loadSubjects() {
-      const sem = document.getElementById("semester").value;
-      const form = document.getElementById("marksForm");
-      form.innerHTML = "";
-      document.getElementById("sgpaResult").innerHTML = "";
-
-      if (!semesters[sem]) return;
-
-      semesters[sem].forEach((subject, index) => {
-        const [name, credit, type] = subject;
-        const maxMarks = type === "Practical" ? 50 : 100;
-        form.innerHTML += `
-          <div class="subject">
-            <label>${index + 1}. ${name} (Credit: ${credit})${type === "Practical" ? " [Practical]" : ""}</label>
-            <input type="number" min="0" max="${maxMarks}" placeholder="Enter marks out of ${maxMarks}" data-credit="${credit}" data-type="${type || 'Theory'}">
-          </div>
-        `;
-      });
-    }
-
-    function getGrade(marks, type) {
-      const max = type === "Practical" ? 50 : 100;
-      const percent = (marks / max) * 100;
-
-      if (percent >= 90) return "O";
-      if (percent >= 80) return "A+";
-      if (percent >= 70) return "A";
-      if (percent >= 60) return "B+";
-      if (percent >= 50) return "B";
-      if (percent >= 40) return "C";
-      return "F";
-    }
-
-    function getGradePoint(grade) {
-      const map = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "F": 0 };
-      return map[grade] || 0;
-    }
-
-    function calculateSGPA() {
-      const inputs = document.querySelectorAll("#marksForm input");
-      let totalCredits = 0;
-      let weightedPoints = 0;
-
-      inputs.forEach(input => {
-        const marks = parseFloat(input.value);
-        const credit = parseFloat(input.dataset.credit);
-        const type = input.dataset.type;
-
-        if (!isNaN(marks)) {
-          const grade = getGrade(marks, type);
-          const point = getGradePoint(grade);
-          totalCredits += credit;
-          weightedPoints += point * credit;
-        }
-      });
-
-      const sgpa = (weightedPoints / totalCredits).toFixed(2);
-      document.getElementById("sgpaResult").innerHTML = `Your SGPA is: <strong>${sgpa}</strong>`;
-    }
-
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      let y = 20;
-
-      doc.setFontSize(16);
-      doc.text("BEU Semester Result Prediction", 20, y);
-      doc.setFontSize(12);
-      doc.text("Branch: Mechanical", 20, y + 10);
-      y += 20;
-
-      const inputs = document.querySelectorAll("#marksForm input");
-      inputs.forEach((input, index) => {
-        const label = input.previousElementSibling.innerText;
-        const marks = input.value || "N/A";
-        doc.text(`${index + 1}. ${label} - Marks: ${marks}`, 20, y);
-        y += 10;
-      });
-
-      const sgpaText = document.getElementById("sgpaResult").innerText;
-      if (sgpaText) {
-        doc.text(sgpaText, 20, y + 10);
-      }
-
-      doc.save("BEU_Mechanical_Result.pdf");
-    }
-  </script>
-</body>
-</html>
+export default SGPA_Calculator;
