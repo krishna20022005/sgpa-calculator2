@@ -215,8 +215,8 @@
                 min-width: unset;
             }
             .btn {
-                padding: 12px 20px;
-                font-size: 1em;
+                    padding: 12px 20px;
+                    font-size: 1em;
             }
         }
         /* style.css content ends here */
@@ -265,9 +265,9 @@
                     { code: "100101", name: "Engineering Chemistry", credit: 3, type: "theory" },
                     { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
                     { code: "100103", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "theory" }, // Assuming theory for credit point calculation, but it's a drawing subject
+                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "theory" },
                     { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical_100" }, // Assuming 100 marks practical as it's general
+                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" }, // Corrected to 'practical' (30-20)
                     { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
                     { code: "100103P", name: "Communicative English Lab", credit: 1, type: "practical" },
                     { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "practical" },
@@ -277,8 +277,8 @@
                     { code: "100201", name: "Engineering Physics", credit: 3, type: "theory" },
                     { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "theory" },
                     { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "practical_100" }, // Assuming this is also a 100-mark practical/activity
-                    { code: "100206", name: "Workshop Practices", credit: 2, type: "theory" }, // Assuming theory
+                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "practical" }, // Corrected to 'practical' (30-20)
+                    { code: "100206", name: "Workshop Practices", credit: 2, type: "theory" },
                     { code: "100204", name: "Elements of Mechanical Engineering", credit: 3, type: "theory" },
                     { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
                     { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" },
@@ -292,7 +292,7 @@
                     { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILILTY AND STATISTICS)", credit: 4, type: "theory" },
                     { code: "102304", name: "THERMODYNAMICS", credit: 4, type: "theory" },
                     { code: "100309P", name: "ENGINEERING MECHANICS", credit: 1, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" }, // Special 100-mark subject
+                    { code: "100399", name: "Internship", credit: 4, type: "special_100" }, // Internship is present here as special_100
                     { code: "102302P", name: "Machine Drawing", credit: 2, type: "practical" }
                 ],
                 "4th Semester": [
@@ -301,7 +301,7 @@
                     { code: "102403", name: "Fluid Mechanics", credit: 3, type: "theory" },
                     { code: "102404", name: "Instrumentation & Control", credit: 4, type: "theory" },
                     { code: "102405", name: "Strength of Materials", credit: 3, type: "theory" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" }, // Special 100-mark subject
+                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" }, // MOOCs present here
                     { code: "102403P", name: "Fluid Mechanics LAB", credit: 1.50, type: "practical" },
                     { code: "102405P", name: "Strength of Materials LAB", credit: 1.50, type: "practical" }
                 ],
@@ -310,8 +310,8 @@
                     { code: "102502", name: "Heat Transfer", credit: 3, type: "theory" },
                     { code: "102503", name: "Kinematics of Machine", credit: 4, type: "theory" },
                     { code: "102504", name: "Manufacturing Processes", credit: 3, type: "theory" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" }, // Special 100-mark subject
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses – 2", credit: 2, type: "special_100" }, // Special 100-mark subject
+                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" }, // Summer Entrepreneurship present here
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses – 2", credit: 2, type: "special_100" }, // MOOCs present here
                     { code: "102501P", name: "Fluid Machinery", credit: 1.50, type: "practical" },
                     { code: "102502P", name: "Heat Transfer", credit: 1.50, type: "practical" },
                     { code: "102504P", name: "Manufacturing Processes", credit: 1.50, type: "practical" }
@@ -332,7 +332,7 @@
         function getTheoryGradePoint(endSemMarks, collegeMarks) {
             const totalMarks = parseInt(endSemMarks) + parseInt(collegeMarks);
 
-            // Fail condition: End-Sem marks less than 25
+            // Fail condition: End-Sem marks less than 25 (out of 70)
             if (parseInt(endSemMarks) < 25) {
                 return 0; // Fail
             }
@@ -344,7 +344,7 @@
             if (totalMarks >= 60) return gradePoints['C'];
             if (totalMarks >= 50) return gradePoints['D'];
             if (totalMarks >= 35) return gradePoints['P'];
-            return gradePoints['F']; // Should ideally not be hit if endSemMarks >= 25 and total >= 35
+            return gradePoints['F']; // Fallback, though usually handled by above conditions
         }
 
         // Function to determine grade point for Practical subjects (out of 50)
@@ -353,7 +353,7 @@
             const totalMarks = parseInt(universityMarks) + parseInt(collegeMarks);
             const percentage = (totalMarks / 50) * 100;
 
-            // Fail condition: Total practical marks less than 20
+            // Fail condition: Total practical marks less than 20 (out of 50)
             if (totalMarks < 20) {
                 return 0; // Fail
             }
@@ -365,10 +365,10 @@
             if (percentage >= 60) return gradePoints['C'];
             if (percentage >= 50) return gradePoints['D'];
             if (percentage >= 40) return gradePoints['P']; // 40-49% as per your Practical grading
-            return gradePoints['F']; // Should not be hit if totalMarks >= 20
+            return gradePoints['F']; // Fallback
         }
 
-        // Function to determine grade point for 100-mark special subjects (Internship, MOOCs)
+        // Function to determine grade point for 100-mark special subjects (Internship, MOOCs, etc.)
         function getSpecial100GradePoint(totalMarks) {
             totalMarks = parseInt(totalMarks);
             if (totalMarks >= 90) return gradePoints['A+'];
@@ -462,7 +462,7 @@
                             <input type="number" placeholder="College (20)" min="0" max="20" data-part="college" required>
                         `;
                         practicalSection.appendChild(subjectItem);
-                    } else if (subject.type === 'special_100' || subject.type === 'practical_100') {
+                    } else if (subject.type === 'special_100') {
                         marksInputDiv.innerHTML = `
                             <input type="number" placeholder="Total Marks (100)" min="0" max="100" data-part="total" required>
                         `;
@@ -471,7 +471,7 @@
                     subjectItem.appendChild(marksInputDiv);
                 });
 
-                // Append sections only if they contain subjects
+                // Append sections only if they contain subjects (more than just the h3 tag)
                 if (theorySection.children.length > 1) subjectsContainer.appendChild(theorySection);
                 if (practicalSection.children.length > 1) subjectsContainer.appendChild(practicalSection);
                 if (specialSection.children.length > 1) subjectsContainer.appendChild(specialSection);
@@ -496,7 +496,7 @@
             let totalGradePoints = 0;
             let totalCredits = 0;
             let allMarksEntered = true;
-            const subjectMarks = []; // To store marks for PDF generation
+            const subjectResultsForPdf = []; // To store results for PDF generation
 
             const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
             subjectItems.forEach(item => {
@@ -506,8 +506,8 @@
                 const subjectName = item.querySelector('.subject-details .name').textContent.split(': ')[1]; // Extract name
 
                 let gradePoint = 0;
-                let marks1, marks2, totalEnteredMarks;
-                let currentSubjectResult = { code: subjectCode, name: subjectName, credit: credit, grade: '', marks: '' };
+                let marks1_val, marks2_val, totalCalculatedMarks; // Use distinct names for values
+                let marksDisplayString = ''; // For PDF marks column
 
                 if (type === 'theory') {
                     const endSemInput = item.querySelector('input[data-part="endSem"]');
@@ -516,11 +516,11 @@
                         allMarksEntered = false;
                         return;
                     }
-                    marks1 = parseInt(endSemInput.value);
-                    marks2 = parseInt(collegeInput.value);
-                    gradePoint = getTheoryGradePoint(marks1, marks2);
-                    totalEnteredMarks = marks1 + marks2;
-                    currentSubjectResult.marks = `${marks1} (End-Sem) + ${marks2} (College) = ${totalEnteredMarks}`;
+                    marks1_val = parseInt(endSemInput.value); // End-Sem marks
+                    marks2_val = parseInt(collegeInput.value); // College marks
+                    gradePoint = getTheoryGradePoint(marks1_val, marks2_val);
+                    totalCalculatedMarks = marks1_val + marks2_val;
+                    marksDisplayString = `${marks1_val} (End-Sem) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
                 } else if (type === 'practical') {
                     const universityInput = item.querySelector('input[data-part="university"]');
                     const collegeInput = item.querySelector('input[data-part="college"]');
@@ -528,30 +528,37 @@
                         allMarksEntered = false;
                         return;
                     }
-                    marks1 = parseInt(universityInput.value);
-                    marks2 = parseInt(collegeInput.value);
-                    gradePoint = getPracticalGradePoint(marks1, marks2);
-                    totalEnteredMarks = marks1 + marks2;
-                    currentSubjectResult.marks = `${marks1} (University) + ${marks2} (College) = ${totalEnteredMarks}`;
-                } else if (type === 'special_100' || type === 'practical_100') {
+                    marks1_val = parseInt(universityInput.value); // University marks
+                    marks2_val = parseInt(collegeInput.value); // College marks
+                    gradePoint = getPracticalGradePoint(marks1_val, marks2_val);
+                    totalCalculatedMarks = marks1_val + marks2_val;
+                    marksDisplayString = `${marks1_val} (University) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
+                } else if (type === 'special_100') {
                     const totalInput = item.querySelector('input[data-part="total"]');
                     if (totalInput.value === '') {
                         allMarksEntered = false;
                         return;
                     }
-                    marks1 = parseInt(totalInput.value); // Use marks1 for the single input
-                    gradePoint = getSpecial100GradePoint(marks1);
-                    totalEnteredMarks = marks1;
-                    currentSubjectResult.marks = `${totalEnteredMarks}`;
+                    marks1_val = parseInt(totalInput.value); // Total marks for special_100
+                    gradePoint = getSpecial100GradePoint(marks1_val);
+                    totalCalculatedMarks = marks1_val;
+                    marksDisplayString = `${totalCalculatedMarks}`; // Only total for special_100
                 }
 
                 totalGradePoints += (gradePoint * credit);
                 totalCredits += credit;
                 
                 // Find the grade character from gradePoints based on value
-                currentSubjectResult.grade = Object.keys(gradePoints).find(key => gradePoints[key] === gradePoint);
-                currentSubjectResult.gradePoint = gradePoint; // Also store grade point for clarity
-                subjectMarks.push(currentSubjectResult);
+                const gradeChar = Object.keys(gradePoints).find(key => gradePoints[key] === gradePoint);
+                
+                subjectResultsForPdf.push({ 
+                    code: subjectCode, 
+                    name: subjectName, 
+                    credit: credit, 
+                    marks: marksDisplayString, // Use the prepared display string
+                    grade: gradeChar, 
+                    gradePoint: gradePoint 
+                });
             });
 
             if (!allMarksEntered) {
@@ -567,7 +574,7 @@
 
             resultContainer.innerHTML = `Your SGPA: <span style="color: #4CAF50;">${sgpa}</span>`;
             resultContainer.dataset.sgpa = sgpa; // Store SGPA for PDF
-            resultContainer.dataset.subjectMarks = JSON.stringify(subjectMarks); // Store marks for PDF
+            resultContainer.dataset.subjectMarks = JSON.stringify(subjectResultsForPdf); // Store marks for PDF
             downloadPdfBtn.disabled = false;
         });
 
@@ -610,38 +617,49 @@
             doc.setFontSize(10);
             doc.setTextColor(240, 240, 240); // Light grey
             
+            // Define column positions (Adjusted for better alignment)
+            const colCode = 15;
+            const colName = 40; // Increased width for subject name
+            const colCredits = 115; // Adjusted
+            const colMarks = 130; // Adjusted for descriptive marks
+            const colGrade = 180; // Adjusted
+            const colGP = 190;   // Adjusted
+
             // Table Headers
-            doc.text("Code", 20, y);
-            doc.text("Subject Name", 40, y);
-            doc.text("Credits", 100, y);
-            doc.text("Marks Obtained", 120, y);
-            doc.text("Grade", 170, y);
-            doc.text("GP", 185, y);
+            doc.text("Code", colCode, y);
+            doc.text("Subject Name", colName, y);
+            doc.text("Credits", colCredits, y);
+            doc.text("Marks Obtained", colMarks, y);
+            doc.text("Grade", colGrade, y);
+            doc.text("GP", colGP, y);
             y += 5;
-            doc.line(20, y, 190, y); // Horizontal line
+            doc.line(colCode, y, 200, y); // Horizontal line, adjusted end for wider columns
             y += 5;
 
             subjectMarks.forEach(sub => {
-                doc.text(sub.code, 20, y);
-                doc.text(sub.name, 40, y);
-                doc.text(String(sub.credit), 100, y);
-                doc.text(sub.marks, 120, y);
-                doc.text(sub.grade, 170, y);
-                doc.text(String(sub.gradePoint), 185, y);
-                y += 7;
-                if (y > 280) { // Check for page break
+                doc.text(sub.code, colCode, y);
+                // Adjust text for Subject Name to wrap if too long, or truncate
+                // For simplicity, just placing it. If names are very long, further logic needed.
+                doc.text(sub.name, colName, y); 
+                doc.text(String(sub.credit), colCredits, y);
+                doc.text(sub.marks, colMarks, y); // This will include the breakdown string
+                doc.text(sub.grade, colGrade, y);
+                doc.text(String(sub.gradePoint), colGP, y);
+                y += 7; // Line height for each subject
+                if (y > 280) { // Check for page break (near bottom of page)
                     doc.addPage();
-                    y = 20;
+                    y = 20; // Reset y for new page
                     doc.setFontSize(10);
                     doc.setTextColor(240, 240, 240);
-                    doc.text("Code", 20, y);
-                    doc.text("Subject Name", 40, y);
-                    doc.text("Credits", 100, y);
-                    doc.text("Marks Obtained", 120, y);
-                    doc.text("Grade", 170, y);
-                    doc.text("GP", 185, y);
+                    // Repeat headers on new page
+                    doc.text("Code", colCode, y);
+                    doc.text("Subject Name", colName, y);
+                    doc.text("Credits", colCredits, y);
+                    doc.text("Marks Obtained", colMarks, y);
+                    doc.text("Grade", colGrade, y);
+                    doc.text("GP", colGP, y);
                     y += 5;
-                    doc.line(20, y, 190, y);
+                    doc.line(colCode, y, 200, y);
                     y += 5;
                 }
             });
