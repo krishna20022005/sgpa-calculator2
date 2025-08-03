@@ -21,8 +21,8 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* To stack calculator and about section */
+            align-items: center;
             min-height: 100vh;
         }
 
@@ -192,6 +192,44 @@
         .hidden {
             display: none;
         }
+
+        /* --- STYLES FOR ABOUT SECTION --- */
+        .about-section {
+            width: 100%;
+            max-width: 950px;
+            margin: 40px auto 20px auto;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border-top: 2px solid var(--primary-orange);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .about-section h3 {
+            color: var(--primary-orange);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .about-section p {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-section a {
+            color: var(--primary-orange);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .about-section a:hover {
+            text-decoration: underline;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,6 +270,24 @@
             <p id="result-text"></p>
         </div>
     </div>
+
+    <div class="about-section">
+        <h3>About This SGPA Calculator</h3>
+        <p>
+            This SGPA Calculator is designed and developed by <strong>Krishna Raj</strong>, a student of Rashtrakavi Ramdhari Singh Dinkar College of Engineering, Batch 2023, from the Mechanical Engineering Department.
+        </p>
+        <p>
+            This tool is created with the purpose of result prediction for students. Please note that the calculated SGPA may differ slightly from your final official SGPA, but there will not be any major difference.
+        </p>
+        <p>
+            In the future, major updates and improvements will be introduced in this SGPA Calculator to enhance accuracy and user experience.
+        </p>
+        <p>
+            Connect with me on 
+            <a href="https://www.linkedin.com/in/krishna-raj-🇮🇳-528108310" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+        </p>
+    </div>
+
 
     <script>
         // --- COMPLETE UNIVERSITY DATA ---
@@ -733,7 +789,7 @@
             }
         };
 
-        // DOM Elements
+        // --- Rest of the JavaScript Logic (no changes needed here) ---
         const branchSelect = document.getElementById('branch-select');
         const semesterSelect = document.getElementById('semester-select');
         const subjectTable = document.getElementById('subject-table');
@@ -805,7 +861,6 @@
                     subjectHtml = `
                         <div class="subject-name">${subject.name}</div>
                         <select class="elective-select">${optionsHtml}</select>`;
-                    // Assuming all electives are theory based on provided data
                     marksInputHtml = `<input type="number" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese"><input type="number" placeholder="IA (30)" min="0" max="30" data-mark-type="ia">`;
                 }
 
