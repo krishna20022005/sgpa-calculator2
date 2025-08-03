@@ -28,7 +28,7 @@
 
         .calculator-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
@@ -42,7 +42,6 @@
             margin-top: 0;
             margin-bottom: 5px;
             font-size: 2rem;
-            /* Hindi font support */
             font-family: 'Noto Sans Devanagari', Arial, sans-serif;
         }
 
@@ -93,7 +92,7 @@
         }
 
         th, td {
-            padding: 12px;
+            padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
@@ -118,8 +117,9 @@
             color: #ccc;
         }
         
-        .marks-container input {
+        .marks-container input, .marks-container select {
             margin-right: 5px;
+            margin-top: 5px;
         }
 
         input[type="number"] {
@@ -132,7 +132,11 @@
             text-align: center;
         }
         
-        /* Hide number input spinners */
+        .elective-select {
+            padding: 8px;
+            max-width: 300px;
+        }
+        
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
           -webkit-appearance: none; 
@@ -230,296 +234,501 @@
     </div>
 
     <script>
+        // --- COMPLETE UNIVERSITY DATA ---
         const universityData = {
             "Mechanical": {
                 "1": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
+                    { "code": "100101", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100103", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100104", "name": "Engineering Graphics and Design", "credit": 1, "type": "Theory" },
+                    { "code": "100106", "name": "Basic Electrical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100109P", "name": "Sports/Yoga/NCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100101P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100103P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100104P", "name": "Engineering Graphics and Design Lab", "credit": 2, "type": "Practical" },
+                    { "code": "100106P", "name": "Basic Electrical Engineering Lab", "credit": 1, "type": "Practical" }
                 ],
                 "2": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
-                    { code: "100206", name: "Workshop Practices", credit: 2, type: "Theory" },
-                    { code: "100204", name: "Elements of Mechanical Engineering", credit: 3, type: "Theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
-                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "Practical" },
-                    { code: "100204P", name: "Elements of Mechanical Engineering Lab", credit: 1, type: "Practical" }
+                    { "code": "100201", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-II", "credit": 4, "type": "Theory" },
+                    { "code": "100203", "name": "Programming for Problem Solving", "credit": 3, "type": "Theory" },
+                    { "code": "100214P", "name": "Swachha Bharat Mission", "credit": 1, "type": "Practical" },
+                    { "code": "100206", "name": "Workshop Practices", "credit": 2, "type": "Theory" },
+                    { "code": "100204", "name": "Elements of Mechanical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100201P", "name": "Engineering Physics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100203P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100206P", "name": "Workshop Practices Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100204P", "name": "Elements of Mechanical Engineering Lab", "credit": 1, "type": "Practical" }
                 ],
                 "3": [
-                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 3, type: "Theory" },
-                    { code: "100303", name: "BASIC ELECTRONICS ENGINEERING", credit: 4, type: "Theory" },
-                    { code: "100309", name: "ENGINEERING MECHANICS", credit: 3, type: "Theory" },
-                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILILTY AND STATISTICS)", credit: 4, type: "Theory" },
-                    { code: "102304", name: "THERMODYNAMICS", credit: 4, type: "Theory" },
-                    { code: "100309P", name: "ENGINEERING MECHANICS", credit: 1, type: "Practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
-                    { code: "102302P", name: "Machine Drawing", credit: 2, type: "Practical" }
+                    { "code": "100301", "name": "BIOLOGY FOR ENGINEERS", "credit": 3, "type": "Theory" },
+                    { "code": "100303", "name": "BASIC ELECTRONICS ENGINEERING", "credit": 4, "type": "Theory" },
+                    { "code": "100309", "name": "ENGINEERING MECHANICS", "credit": 3, "type": "Theory" },
+                    { "code": "100312", "name": "MATHEMATICS-III (PDE, PROBABILILTY AND STATISTICS)", "credit": 4, "type": "Theory" },
+                    { "code": "102304", "name": "THERMODYNAMICS", "credit": 4, "type": "Theory" },
+                    { "code": "100309P", "name": "ENGINEERING MECHANICS", "credit": 1, "type": "Practical" },
+                    { "code": "100399", "name": "Internship", "credit": 4, "type": "Special" },
+                    { "code": "102302P", "name": "Machine Drawing", "credit": 2, "type": "Practical" }
                 ],
                 "4": [
-                    { code: "102401", name: "Applied Thermodynamics", credit: 4, type: "Theory" },
-                    { code: "102402", name: "Engineering Materials", credit: 4, type: "Theory" },
-                    { code: "102403", name: "Fluid Mechanics", credit: 3, type: "Theory" },
-                    { code: "102404", name: "Instrumentation & Control", credit: 4, type: "Theory" },
-                    { code: "102405", name: "Strength of Materials", credit: 3, type: "Theory" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "Special" },
-                    { code: "102403P", name: "Fluid Mechanics LAB", credit: 1.50, type: "Practical" },
-                    { code: "102405P", name: "Strength of Materials LAB", credit: 1.50, type: "Practical" }
+                    { "code": "102401", "name": "Applied Thermodynamics", "credit": 4, "type": "Theory" },
+                    { "code": "102402", "name": "Engineering Materials", "credit": 4, "type": "Theory" },
+                    { "code": "102403", "name": "Fluid Mechanics", "credit": 3, "type": "Theory" },
+                    { "code": "102404", "name": "Instrumentation & Control", "credit": 4, "type": "Theory" },
+                    { "code": "102405", "name": "Strength of Materials", "credit": 3, "type": "Theory" },
+                    { "code": "100408", "name": "MOOCs / SWAYAM / NPTEL Courses - 1", "credit": 2, "type": "Special" },
+                    { "code": "102403P", "name": "Fluid Mechanics LAB", "credit": 1.5, "type": "Practical" },
+                    { "code": "102405P", "name": "Strength of Materials LAB", "credit": 1.5, "type": "Practical" }
                 ],
                 "5": [
-                    { code: "102501", name: "Fluid Machinery", credit: 3, type: "Theory" },
-                    { code: "102502", name: "Heat Transfer", credit: 3, type: "Theory" },
-                    { code: "102503", name: "Kinematics of Machine", credit: 4, type: "Theory" },
-                    { code: "102504", name: "Manufacturing Processes", credit: 3, type: "Theory" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses – 2", credit: 2, type: "Special" },
-                    { code: "102501P", name: "Fluid Machinery", credit: 1.50, type: "Practical" },
-                    { code: "102502P", name: "Heat Transfer", credit: 1.50, type: "Practical" },
-                    { code: "102504P", name: "Manufacturing Processes", credit: 1.50, type: "Practical" }
+                    { "code": "102501", "name": "Fluid Machinery", "credit": 3, "type": "Theory" },
+                    { "code": "102502", "name": "Heat Transfer", "credit": 3, "type": "Theory" },
+                    { "code": "102503", "name": "Kinematics of Machine", "credit": 4, "type": "Theory" },
+                    { "code": "102504", "name": "Manufacturing Processes", "credit": 3, "type": "Theory" },
+                    { "code": "100510", "name": "Summer Entrepreneurship – II", "credit": 6, "type": "Special" },
+                    { "code": "100511", "name": "MOOCs / SWAYAM / NPTEL Courses – 2", "credit": 2, "type": "Special" },
+                    { "code": "102501P", "name": "Fluid Machinery", "credit": 1.5, "type": "Practical" },
+                    { "code": "102502P", "name": "Heat Transfer", "credit": 1.5, "type": "Practical" },
+                    { "code": "102504P", "name": "Manufacturing Processes", "credit": 1.5, "type": "Practical" }
+                ],
+                "6": [
+                    { "code": "102601", "name": "Design of Machine Elements", "credit": 3, "type": "Theory" },
+                    { "code": "102602", "name": "Dynamics of Machinery", "credit": 3, "type": "Theory" },
+                    { "code": "102603", "name": "Manufacturing Technology", "credit": 3, "type": "Theory" },
+                    { "code": "102605", "name": "Automation in Manufacturing", "credit": 3, "type": "Theory" },
+                    { "code": "102611", "name": "Renewable Energy Systems (Open Elective I)", "credit": 3, "type": "Theory" },
+                    { "type": "Elective", "name": "Program Elective-I", "credit": 3, "options": [
+                        { "code": "102606", "name": "Process Planning and Cost Estimation" },
+                        { "code": "102607", "name": "Mechatronics Systems" },
+                        { "code": "102608", "name": "Microprocessors in Automation" }
+                    ]},
+                    { "type": "Elective", "name": "Program Elective-II", "credit": 3, "options": [
+                        { "code": "102609", "name": "Composite Materials" },
+                        { "code": "102610", "name": "Power Plant Engineering" }
+                    ]},
+                    { "code": "102601P", "name": "Design of Machine Elements Lab", "credit": 1, "type": "Practical" },
+                    { "code": "102602P", "name": "Dynamics of Machinery Lab", "credit": 1.5, "type": "Practical" },
+                    { "code": "102603P", "name": "Manufacturing Technology Lab", "credit": 1.5, "type": "Practical" },
+                    { "code": "102605P", "name": "Automation in Manufacturing Lab", "credit": 1, "type": "Practical" }
+                ],
+                "7": [
+                    { "code": "102701", "name": "Internal Combustion Engines", "credit": 3, "type": "Theory" },
+                    { "code": "10270A", "name": "Open Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10270B", "name": "Program Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "10270C", "name": "Program Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "100702P", "name": "Summer Entrepreneurship III", "credit": 8, "type": "Practical" },
+                    { "code": "100709P", "name": "Project I", "credit": 6, "type": "Practical" },
+                    { "code": "102701P", "name": "Internal Combustion Engines LAB", "credit": 1.5, "type": "Practical" }
+                ],
+                "8": [
+                    { "code": "10280X", "name": "Open Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "10280Y", "name": "Open Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "10280A", "name": "Program Elective V", "credit": 3, "type": "Theory" },
+                    { "code": "10280B", "name": "Program Elective VI", "credit": 3, "type": "Theory" },
+                    { "code": "100801P", "name": "Project II", "credit": 6, "type": "Practical" }
                 ]
             },
             "CSE": {
                 "1": [
-                    { code: "100110", name: "Engineering Physics", credit: 3, type: "Theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
-                    { code: "100115P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
-                    { code: "100113", name: "IT Workshop", credit: 2, type: "Theory" },
-                    { code: "100114", name: "Basic Electronics Engineering", credit: 3, type: "Theory" },
-                    { code: "100110P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
-                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
-                    { code: "100113P", name: "IT Workshop Lab", credit: 1, type: "Practical" },
-                    { code: "100114P", name: "Basic Electronics Engineering Lab", credit: 1, type: "Practical" }
+                    { "code": "100110", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100111", "name": "Programming for Problem Solving", "credit": 3, "type": "Theory" },
+                    { "code": "100115P", "name": "Swachha Bharat Mission", "credit": 1, "type": "Practical" },
+                    { "code": "100113", "name": "IT Workshop", "credit": 2, "type": "Theory" },
+                    { "code": "100114", "name": "Basic Electronics Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100110P", "name": "Engineering Physics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100111P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100113P", "name": "IT Workshop Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100114P", "name": "Basic Electronics Engineering Lab", "credit": 1, "type": "Practical" }
                 ],
                 "2": [
-                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "Theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
-                    { code: "100216", name: "Communicative English", credit: 3, type: "Theory" },
-                    { code: "100220P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
-                    { code: "100218", name: "Python Programming", credit: 2, type: "Theory" },
-                    { code: "100219", name: "Introduction to Web Design", credit: 3, type: "Theory" },
-                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "Practical" },
-                    { code: "100218P", name: "Python Programming Lab", credit: 1, type: "Practical" },
-                    { code: "100219P", name: "Introduction to Web Design Lab", credit: 1, type: "Practical" }
+                    { "code": "100215", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-II", "credit": 4, "type": "Theory" },
+                    { "code": "100216", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100220P", "name": "Sports/Yoga/NCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100218", "name": "Python Programming", "credit": 2, "type": "Theory" },
+                    { "code": "100219", "name": "Introduction to Web Design", "credit": 3, "type": "Theory" },
+                    { "code": "100215P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100216P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100218P", "name": "Python Programming Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100219P", "name": "Introduction to Web Design Lab", "credit": 1, "type": "Practical" }
                 ],
                 "3": [
-                    { code: "100311", name: "MATHEMATICS-III (DIFFERENTIAL CALCULUS)", credit: 2, type: "Theory" },
-                    { code: "100313", name: "OBJECT ORIENTED PROGRAMMING USING C++", credit: 3, type: "Theory" },
-                    { code: "100314", name: "TECHNICAL WRITING", credit: 3, type: "Theory" },
-                    { code: "100302", name: "ANALOG ELECTRONIC CIRCUITS", credit: 3, type: "Theory" },
-                    { code: "100304", name: "DATA STRUCTURE & ALGORITHMS", credit: 3, type: "Theory" },
-                    { code: "100313P", name: "OBJECT ORIENTED PROGRAMMING USING C++ LAB", credit: 2, type: "Practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
-                    { code: "100302P", name: "Analog Electronics Circuits Laboratory LAB", credit: 2, type: "Practical" },
-                    { code: "100304P", name: "DATA STRUCTURE & ALGORITHMS LAB", credit: 2, type: "Practical" }
+                    { "code": "100311", "name": "MATHEMATICS-III (DIFFERENTIAL CALCULUS)", "credit": 2, "type": "Theory" },
+                    { "code": "100313", "name": "OBJECT ORIENTED PROGRAMMING USING C++", "credit": 3, "type": "Theory" },
+                    { "code": "100314", "name": "TECHNICAL WRITING", "credit": 3, "type": "Theory" },
+                    { "code": "100302", "name": "ANALOG ELECTRONIC CIRCUITS", "credit": 3, "type": "Theory" },
+                    { "code": "100304", "name": "DATA STRUCTURE & ALGORITHMS", "credit": 3, "type": "Theory" },
+                    { "code": "100313P", "name": "OBJECT ORIENTED PROGRAMMING USING C++ LAB", "credit": 2, "type": "Practical" },
+                    { "code": "100399", "name": "Internship", "credit": 4, "type": "Special" },
+                    { "code": "100302P", "name": "Analog Electronics Circuits Laboratory LAB", "credit": 2, "type": "Practical" },
+                    { "code": "100304P", "name": "DATA STRUCTURE & ALGORITHMS LAB", "credit": 2, "type": "Practical" }
                 ],
                 "4": [
-                    { code: "100403", name: "Digital Electronics", credit: 3, type: "Theory" },
-                    { code: "100404", name: "Discrete Mathematics", credit: 4, type: "Theory" },
-                    { code: "100407", name: "Human Resource Development and Organizational Behavior", credit: 3, type: "Theory" },
-                    { code: "105401", name: "Computer Organization & Architecture", credit: 3, type: "Theory" },
-                    { code: "105402", name: "Design & Analysis of Algorithms", credit: 3, type: "Theory" },
-                    { code: "105403", name: "Operating Systems", credit: 3, type: "Theory" },
-                    { code: "100403P", name: "Digital Electronics", credit: 2, type: "Practical" },
-                    { code: "105401P", name: "Computer Organization & Architecture", credit: 2, type: "Practical" },
-                    { code: "105402P", "name": "Design & Analysis of Algorithms", credit: 2, type: "Practical" },
-                    { code: "105403P", name: "Operating Systems", credit: 2, type: "Practical" }
+                    { "code": "100403", "name": "Digital Electronics", "credit": 3, "type": "Theory" },
+                    { "code": "100404", "name": "Discrete Mathematics", "credit": 4, "type": "Theory" },
+                    { "code": "100407", "name": "Human Resource Development and Organizational Behavior", "credit": 3, "type": "Theory" },
+                    { "code": "105401", "name": "Computer Organization & Architecture", "credit": 3, "type": "Theory" },
+                    { "code": "105402", "name": "Design & Analysis of Algorithms", "credit": 3, "type": "Theory" },
+                    { "code": "105403", "name": "Operating Systems", "credit": 3, "type": "Theory" },
+                    { "code": "100403P", "name": "Digital Electronics", "credit": 2, "type": "Practical" },
+                    { "code": "105401P", "name": "Computer Organization & Architecture", "credit": 2, "type": "Practical" },
+                    { "code": "105402P", "name": "Design & Analysis of Algorithms", "credit": 2, "type": "Practical" },
+                    { "code": "105403P", "name": "Operating Systems", "credit": 2, "type": "Practical" }
                 ],
                 "5": [
-                    { code: "100508", name: "Professional Skill Development", credit: 3, type: "Theory" },
-                    { code: "105501", name: "Artificial intelligence", credit: 3, type: "Theory" },
-                    { code: "105502", name: "Database Management Systems", credit: 3, type: "Theory" },
-                    { code: "105503", name: "Formal Language & Automata Theory", credit: 4, type: "Theory" },
-                    { code: "105504", name: "Software Engineering", credit: 3, type: "Theory" },
-                    { code: "105505P", name: "Seminar", credit: 1, type: "Practical" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "Special" },
-                    { code: "105502P", name: "Database Management Systems", credit: 2, type: "Practical" }
+                    { "code": "100508", "name": "Professional Skill Development", "credit": 3, "type": "Theory" },
+                    { "code": "105501", "name": "Artificial intelligence", "credit": 3, "type": "Theory" },
+                    { "code": "105502", "name": "Database Management Systems", "credit": 3, "type": "Theory" },
+                    { "code": "105503", "name": "Formal Language & Automata Theory", "credit": 4, "type": "Theory" },
+                    { "code": "105504", "name": "Software Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "105505P", "name": "Seminar", "credit": 1, "type": "Practical" },
+                    { "code": "100510", "name": "Summer Entrepreneurship – II", "credit": 6, "type": "Special" },
+                    { "code": "100511", "name": "MOOCs / SWAYAM / NPTEL Courses 1", "credit": 2, "type": "Special" },
+                    { "code": "105502P", "name": "Database Management Systems", "credit": 2, "type": "Practical" }
+                ],
+                "6": [
+                    { "code": "105601", "name": "Compiler Design", "credit": 3, "type": "Theory" },
+                    { "code": "100602", "name": "Computer Networks", "credit": 3, "type": "Theory" },
+                    { "code": "105602", "name": "Machine Learning", "credit": 4, "type": "Theory" },
+                    { "code": "10060A", "name": "Program Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "10060B", "name": "Program Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10560X", "name": "Professional Elective LAB -I", "credit": 1, "type": "Practical" },
+                    { "code": "100602P", "name": "Computer Networks LAB", "credit": 2, "type": "Practical" },
+                    { "code": "100604", "name": "MOOCs / SWAYAM / NPTEL Courses 2", "credit": 2, "type": "Special" },
+                    { "code": "105601P", "name": "Compiler Design LAB", "credit": 2, "type": "Practical" }
+                ],
+                "7": [
+                    { "code": "100708", "name": "Biology For Engineers", "credit": 3, "type": "Theory" },
+                    { "code": "10071A", "name": "Open Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "10571B", "name": "Open Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10571C", "name": "Program Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "100709P", "name": "Project I", "credit": 6, "type": "Practical" },
+                    { "code": "100707P", "name": "Summer Entrepreneurship – III", "credit": 8, "type": "Practical" },
+                    { "code": "100718P", "name": "Professional Elective LAB-II", "credit": 1, "type": "Practical" }
+                ],
+                "8": [
+                    { "code": "10081A", "name": "Open Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "10580B", "name": "Open Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "1058XX", "name": "Program Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "105XXX", "name": "Program Elective V", "credit": 3, "type": "Theory" },
+                    { "code": "100801P", "name": "Project II", "credit": 6, "type": "Practical" }
                 ]
             },
             "Civil": {
-                "1": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
-                    { code: "100105", name: "Engineering Mechanics", credit: 4, type: "Theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" }
+                 "1": [
+                    { "code": "100101", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100103", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100104", "name": "Engineering Graphics and Design", "credit": 1, "type": "Theory" },
+                    { "code": "100105", "name": "Engineering Mechanics", "credit": 4, "type": "Theory" },
+                    { "code": "100109P", "name": "Sports/Yoga/NCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100101P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100103P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100104P", "name": "Engineering Graphics and Design Lab", "credit": 2, "type": "Practical" }
                 ],
                 "2": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
-                    { code: "100210", name: "Building Material and Construction Techniques", credit: 2, type: "Theory" },
-                    { code: "100211", name: "Environmental Science and Sanitation", credit: 2, type: "Theory" },
-                    { code: "100212", name: "Elements of Civil Engineering", credit: 2, type: "Theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
-                    { code: "100210P", name: "Building Material and Construction Techniques Lab", credit: 1, type: "Practical" }
+                    { "code": "100201", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-II", "credit": 4, "type": "Theory" },
+                    { "code": "100203", "name": "Programming for Problem Solving", "credit": 3, "type": "Theory" },
+                    { "code": "100214P", "name": "Swachha Bharat Mission", "credit": 1, "type": "Practical" },
+                    { "code": "100210", "name": "Building Material and Construction Techniques", "credit": 2, "type": "Theory" },
+                    { "code": "100211", "name": "Environmental Science and Sanitation", "credit": 2, "type": "Theory" },
+                    { "code": "100212", "name": "Elements of Civil Engineering", "credit": 2, "type": "Theory" },
+                    { "code": "100201P", "name": "Engineering Physics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100203P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100210P", "name": "Building Material and Construction Techniques Lab", "credit": 1, "type": "Practical" }
                 ],
                 "3": [
-                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 2, type: "Theory" },
-                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILITY AND STATISTICS)", credit: 2, type: "Theory" },
-                    { code: "101302", name: "BASIC ELECTRONICS", credit: 1, type: "Theory" },
-                    { code: "101303", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "Theory" },
-                    { code: "101304", name: "ENGINEERING MECHANICS", credit: 4, type: "Theory" },
-                    { code: "101305", name: "HUMANITIES-I(EFFECTIVE TECHNICAL COMMUNICATION)", credit: 3, type: "Theory" },
-                    { code: "101306", name: "INTRODUCTION TO CIVIL ENGINEERING", credit: 2, type: "Theory" },
-                    { code: "101308", name: "SURVEYING & GEOMATICS", credit: 2, type: "Theory" },
-                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
-                    { code: "101302P", name: "BASIC ELECTRONICS", credit: 1, type: "Practical" },
-                    { code: "101303P", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "Practical" },
-                    { code: "101308P", name: "SURVEYING & GEOMATICS", credit: 1, type: "Practical" }
+                    { "code": "100301", "name": "BIOLOGY FOR ENGINEERS", "credit": 2, "type": "Theory" },
+                    { "code": "100312", "name": "MATHEMATICS-III (PDE, PROBABILITY AND STATISTICS)", "credit": 2, "type": "Theory" },
+                    { "code": "101302", "name": "BASIC ELECTRONICS", "credit": 1, "type": "Theory" },
+                    { "code": "101303", "name": "COMPUTER AIDED CIVIL ENGINEERING DRAWING", "credit": 1, "type": "Theory" },
+                    { "code": "101304", "name": "ENGINEERING MECHANICS", "credit": 4, "type": "Theory" },
+                    { "code": "101305", "name": "HUMANITIES-I(EFFECTIVE TECHNICAL COMMUNICATION)", "credit": 3, "type": "Theory" },
+                    { "code": "101306", "name": "INTRODUCTION TO CIVIL ENGINEERING", "credit": 2, "type": "Theory" },
+                    { "code": "101308", "name": "SURVEYING & GEOMATICS", "credit": 2, "type": "Theory" },
+                    { "code": "100399", "name": "Internship", "credit": 4, "type": "Special" },
+                    { "code": "101302P", "name": "BASIC ELECTRONICS", "credit": 1, "type": "Practical" },
+                    { "code": "101303P", "name": "COMPUTER AIDED CIVIL ENGINEERING DRAWING", "credit": 1, "type": "Practical" },
+                    { "code": "101308P", "name": "SURVEYING & GEOMATICS", "credit": 1, "type": "Practical" }
                 ],
                 "4": [
-                    { code: "101401", name: "Civil Engineering - Societal & Global Impact", credit: 2, type: "Theory" },
-                    { code: "101402", name: "Disaster Preparedness & Planning", credit: 2, type: "Theory" },
-                    { code: "101403", name: "Engineering Geology", credit: 2, type: "Theory" },
-                    { code: "101404", name: "Introduction to Fluid Mechanics", credit: 3, type: "Theory" },
-                    { code: "101405", name: "Introduction to Solid Mechanics", credit: 3, type: "Theory" },
-                    { code: "101406", name: "Materials, Testing & Evaluation", credit: 2, type: "Theory" },
-                    { code: "101407", name: "Mechanical Engineering", credit: 3, type: "Theory" },
-                    { code: "101408", name: "Structural Analysis", credit: 4, type: "Theory" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "Special" },
-                    { code: "101403P", name: "Engineering Geology", credit: 1, type: "Practical" },
-                    { code: "101404P", name: "Introduction to Fluid Mechanics", credit: 1, type: "Practical" },
-                    { code: "101406P", name: "Materials, Testing & Evaluation", credit: 1, type: "Practical" }
+                    { "code": "101401", "name": "Civil Engineering - Societal & Global Impact", "credit": 2, "type": "Theory" },
+                    { "code": "101402", "name": "Disaster Preparedness & Planning", "credit": 2, "type": "Theory" },
+                    { "code": "101403", "name": "Engineering Geology", "credit": 2, "type": "Theory" },
+                    { "code": "101404", "name": "Introduction to Fluid Mechanics", "credit": 3, "type": "Theory" },
+                    { "code": "101405", "name": "Introduction to Solid Mechanics", "credit": 3, "type": "Theory" },
+                    { "code": "101406", "name": "Materials, Testing & Evaluation", "credit": 2, "type": "Theory" },
+                    { "code": "101407", "name": "Mechanical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "101408", "name": "Structural Analysis", "credit": 4, "type": "Theory" },
+                    { "code": "100408", "name": "MOOCs / SWAYAM / NPTEL Courses - 1", "credit": 2, "type": "Special" },
+                    { "code": "101403P", "name": "Engineering Geology", "credit": 1, "type": "Practical" },
+                    { "code": "101404P", "name": "Introduction to Fluid Mechanics", "credit": 1, "type": "Practical" },
+                    { "code": "101406P", "name": "Materials, Testing & Evaluation", "credit": 1, "type": "Practical" }
                 ],
                 "5": [
-                    { code: "101501", name: "Analysis and Design of Concrete Structure", credit: 3, type: "Theory" },
-                    { code: "101502", name: "Environmental Engineering -I", credit: 3, type: "Theory" },
-                    { code: "101503", name: "Geotechnical Engineering -I", credit: 3, type: "Theory" },
-                    { code: "101504", name: "Hydraulic Engineering", credit: 2, type: "Theory" },
-                    { code: "101505", name: "Hydrology & Water Resources Engineering", credit: 2, type: "Theory" },
-                    { code: "101506", name: "Mechanics of Materials", credit: 3, type: "Theory" },
-                    { code: "101507", name: "Transportation Engineering", credit: 3, type: "Theory" },
-                    { code: "100510", name: "Summer Entrepreneurship - II", credit: 6, type: "Special" },
-                    { code: "101502P", name: "Environmental Engineering -I", credit: 1, type: "Practical" },
-                    { code: "101503P", name: "Geotechnical Engineering -I", credit: 1, type: "Practical" },
-                    { code: "101504P", name: "Hydraulic Engineering", credit: 1, type: "Practical" },
-                    { code: "101505P", name: "Hydrology & Water Resources Engineering", credit: 1, type: "Practical" },
-                    { code: "101507P", name: "Transportation Engineering", credit: 1, type: "Practical" }
+                    { "code": "101501", "name": "Analysis and Design of Concrete Structure", "credit": 3, "type": "Theory" },
+                    { "code": "101502", "name": "Environmental Engineering -I", "credit": 3, "type": "Theory" },
+                    { "code": "101503", "name": "Geotechnical Engineering -I", "credit": 3, "type": "Theory" },
+                    { "code": "101504", "name": "Hydraulic Engineering", "credit": 2, "type": "Theory" },
+                    { "code": "101505", "name": "Hydrology & Water Resources Engineering", "credit": 2, "type": "Theory" },
+                    { "code": "101506", "name": "Mechanics of Materials", "credit": 3, "type": "Theory" },
+                    { "code": "101507", "name": "Transportation Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100510", "name": "Summer Entrepreneurship - II", "credit": 6, "type": "Special" },
+                    { "code": "101502P", "name": "Environmental Engineering -I", "credit": 1, "type": "Practical" },
+                    { "code": "101503P", "name": "Geotechnical Engineering -I", "credit": 1, "type": "Practical" },
+                    { "code": "101504P", "name": "Hydraulic Engineering", "credit": 1, "type": "Practical" },
+                    { "code": "101505P", "name": "Hydrology & Water Resources Engineering", "credit": 1, "type": "Practical" },
+                    { "code": "101507P", "name": "Transportation Engineering", "credit": 1, "type": "Practical" }
+                ],
+                "6": [
+                    { "code": "101602", "name": "Construction Engineering & Management", "credit": 3, "type": "Theory" },
+                    { "code": "101603", "name": "Design of Steel Structure", "credit": 3, "type": "Theory" },
+                    { "code": "101604", "name": "Engineering Economics, Estimation & Costing", "credit": 2, "type": "Theory" },
+                    { "code": "101605", "name": "Environmental Engineering-II", "credit": 3, "type": "Theory" },
+                    { "code": "101606", "name": "Geotechnical Engineering -II", "credit": 3, "type": "Theory" },
+                    { "code": "10161A", "name": "Program Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "100604", "name": "MOOCs / SWAYAM / NPTEL Courses – 2", "credit": 2, "type": "Special" },
+                    { "code": "101604P", "name": "Engineering Economics, Estimation & Costing LAB", "credit": 2, "type": "Practical" }
+                ],
+                "7": [
+                    { "code": "100715A", "name": "Open Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "101701", "name": "Professional Practice, Law & Ethics", "credit": 2, "type": "Theory" },
+                    { "code": "10171B", "name": "Program Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10172C", "name": "Program Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "100707P", "name": "Summer Entrepreneurship – III", "credit": 8, "type": "Practical" },
+                    { "code": "100709P", "name": "Project I", "credit": 6, "type": "Practical" }
+                ],
+                "8": [
+                    { "code": "10180A", "name": "Open Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10181B", "name": "Program Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "10182C", "name": "Program Elective V", "credit": 3, "type": "Theory" },
+                    { "code": "10183D", "name": "Program Elective VI", "credit": 3, "type": "Theory" },
+                    { "code": "100801P", "name": "Project", "credit": 6, "type": "Practical" }
                 ]
             },
             "Chemical": {
                 "1": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
+                    { "code": "100101", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100103", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100104", "name": "Engineering Graphics and Design", "credit": 1, "type": "Theory" },
+                    { "code": "100106", "name": "Basic Electrical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100109P", "name": "Sports/Yoga/NCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100101P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100103P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100104P", "name": "Engineering Graphics and Design Lab", "credit": 2, "type": "Practical" },
+                    { "code": "100106P", "name": "Basic Electrical Engineering Lab", "credit": 1, "type": "Practical" }
                 ],
                 "2": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
-                    { code: "100206", name: "Workshop Practices", credit: 2, type: "Theory" },
-                    { code: "100213", name: "Introduction to Chemical Engineering", credit: 4, type: "Theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
-                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "Practical" }
+                    { "code": "100201", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-II", "credit": 4, "type": "Theory" },
+                    { "code": "100203", "name": "Programming for Problem Solving", "credit": 3, "type": "Theory" },
+                    { "code": "100214P", "name": "Swachha Bharat Mission", "credit": 1, "type": "Practical" },
+                    { "code": "100206", "name": "Workshop Practices", "credit": 2, "type": "Theory" },
+                    { "code": "100213", "name": "Introduction to Chemical Engineering", "credit": 4, "type": "Theory" },
+                    { "code": "100201P", "name": "Engineering Physics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100203P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100206P", "name": "Workshop Practices Lab", "credit": 1, "type": "Practical" }
                 ],
                 "3": [
-                    { code: "114301", name: "Introduction to Chemical Engineering", credit: 3, type: "Theory" },
-                    { code: "114302", name: "Process Calculation", credit: 3, type: "Theory" },
-                    { code: "114303", name: "Solid Fluid Operations", credit: 3, type: "Theory" },
-                    { code: "114304", name: "Physical & Organic Chemistry", credit: 3, type: "Theory" },
-                    { code: "114305", name: "Python programming", credit: 3, type: "Theory" },
-                    { code: "114306", name: "Maths – III", credit: 4, type: "Theory" },
-                    { code: "114303P", name: "Solid Fluid Operations Lab", credit: 1.5, type: "Practical" },
-                    { code: "114305P", name: "Python programming Lab", credit: 1.5, type: "Practical" }
+                    { "code": "114301", "name": "Introduction to Chemical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "114302", "name": "Process Calculation", "credit": 3, "type": "Theory" },
+                    { "code": "114303", "name": "Solid Fluid Operations", "credit": 3, "type": "Theory" },
+                    { "code": "114304", "name": "Physical & Organic Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "114305", "name": "Python programming", "credit": 3, "type": "Theory" },
+                    { "code": "114306", "name": "Maths – III", "credit": 4, "type": "Theory" },
+                    { "code": "114303P", "name": "Solid Fluid Operations Lab", "credit": 1.5, "type": "Practical" },
+                    { "code": "114305P", "name": "Python programming Lab", "credit": 1.5, "type": "Practical" }
                 ],
                 "4": [
-                    { code: "114401", name: "Chemical Process Technology", credit: 3, type: "Theory" },
-                    { code: "114402", name: "Chemical Engineering Materials", credit: 3, type: "Theory" },
-                    { code: "114403", name: "Chemical Engineering Thermodynamics", credit: 3, type: "Theory" },
-                    { code: "114404", name: "Industrial Fluid Flow Operations", credit: 3, type: "Theory" },
-                    { code: "114405", name: "Process Equipment Design and Drawing", credit: 3, type: "Theory" },
-                    { code: "114401P", name: "Chemical Process Technology Lab", credit: 2, type: "Practical" },
-                    { code: "114404P", name: "Industrial Fluid Flow Operation Lab", credit: 2, type: "Practical" },
-                    { code: "114405P", name: "Process Equipment Design and Drawing Lab", credit: 2, type: "Practical" }
+                    { "code": "114401", "name": "Chemical Process Technology", "credit": 3, "type": "Theory" },
+                    { "code": "114402", "name": "Chemical Engineering Materials", "credit": 3, "type": "Theory" },
+                    { "code": "114403", "name": "Chemical Engineering Thermodynamics", "credit": 3, "type": "Theory" },
+                    { "code": "114404", "name": "Industrial Fluid Flow Operations", "credit": 3, "type": "Theory" },
+                    { "code": "114405", "name": "Process Equipment Design and Drawing", "credit": 3, "type": "Theory" },
+                    { "code": "114401P", "name": "Chemical Process Technology Lab", "credit": 2, "type": "Practical" },
+                    { "code": "114404P", "name": "Industrial Fluid Flow Operation Lab", "credit": 2, "type": "Practical" },
+                    { "code": "114405P", "name": "Process Equipment Design and Drawing Lab", "credit": 2, "type": "Practical" }
                 ]
             },
             "Electrical & Electronics": {
                 "1": [
-                    { code: "100101", name: "Engineering Physics", credit: 3, type: "Theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
-                    { code: "100112", name: "Workshop Practices", credit: 2, type: "Theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
-                    { code: "100115P", name: "Swachha Bharat Mission (SBM)", credit: 1, type: "Practical" },
-                    { code: "100101P", name: "Engineering PhysicsLab", credit: 1, type: "Practical" },
-                    { code: "100112P", name: "Workshop Practices Lab", credit: 1, type: "Practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" },
-                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" }
+                    { "code": "100101", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100111", "name": "Programming for Problem Solving", "credit": 3, "type": "Theory" },
+                    { "code": "100112", "name": "Workshop Practices", "credit": 2, "type": "Theory" },
+                    { "code": "100106", "name": "Basic Electrical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100115P", "name": "Swachha Bharat Mission (SBM)", "credit": 1, "type": "Practical" },
+                    { "code": "100101P", "name": "Engineering PhysicsLab", "credit": 1, "type": "Practical" },
+                    { "code": "100112P", "name": "Workshop Practices Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100106P", "name": "Basic Electrical Engineering Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100111P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" }
                 ],
                 "2": [
-                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "Theory" },
-                    { code: "100202", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
-                    { code: "100216", name: "Communicative English", credit: 3, type: "Theory" },
-                    { code: "100220P", name: "Sports/YogaNCC/NSS", credit: 1, type: "Practical" },
-                    { code: "100209", name: "Basic Electronics", credit: 3, type: "Theory" },
-                    { code: "100217", name: "Engineering Graphics & Design", credit: 1, type: "Theory" },
-                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
-                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "Practical" },
-                    { code: "100209P", name: "Basic Electronics Lab", credit: 1, type: "Practical" },
-                    { code: "100217P", name: "Engineering Graphics & Design Lab", credit: 2, type: "Practical" }
+                    { "code": "100215", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100216", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100220P", "name": "Sports/YogaNCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100209", "name": "Basic Electronics", "credit": 3, "type": "Theory" },
+                    { "code": "100217", "name": "Engineering Graphics & Design", "credit": 1, "type": "Theory" },
+                    { "code": "100215P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100216P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100209P", "name": "Basic Electronics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100217P", "name": "Engineering Graphics & Design Lab", "credit": 2, "type": "Practical" }
                 ],
                 "3": [
-                    { code: "100305", name: "DIGITAL ELECTRONICS", credit: 3, type: "Theory" },
-                    { code: "100306", name: "ELECTRICAL CIRCUIT ANALYSIS", credit: 4, type: "Theory" },
-                    { code: "100307", name: "ELECTRICAL MACHINES - I", credit: 3, type: "Theory" },
-                    { code: "100308", name: "ELECTROMAGNETIC FIELDS", credit: 4, type: "Theory" },
-                    { code: "100310", name: "ENGINEERING MECHANICS", credit: 4, type: "Theory" },
-                    { code: "100307P", name: "Electrical Machines Laboratory –", credit: 1, type: "Practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
-                    { code: "110301", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "Special" }
+                    { "code": "100305", "name": "DIGITAL ELECTRONICS", "credit": 3, "type": "Theory" },
+                    { "code": "100306", "name": "ELECTRICAL CIRCUIT ANALYSIS", "credit": 4, "type": "Theory" },
+                    { "code": "100307", "name": "ELECTRICAL MACHINES - I", "credit": 3, "type": "Theory" },
+                    { "code": "100308", "name": "ELECTROMAGNETIC FIELDS", "credit": 4, "type": "Theory" },
+                    { "code": "100310", "name": "ENGINEERING MECHANICS", "credit": 4, "type": "Theory" },
+                    { "code": "100307P", "name": "Electrical Machines Laboratory –", "credit": 1, "type": "Practical" },
+                    { "code": "100399", "name": "Internship", "credit": 4, "type": "Special" },
+                    { "code": "110301", "name": "MOOCs / SWAYAM / NPTEL Courses 1", "credit": 2, "type": "Special" }
                 ],
                 "4": [
-                    { code: "100401", name: "Biology for Engineers", credit: 3, type: "Theory" },
-                    { code: "110401", name: "Analog Electronics", credit: 3, type: "Theory" },
-                    { code: "110402", name: "Electrical Machines – II", credit: 3, type: "Theory" },
-                    { code: "110403", name: "Industrial Economics & Foreign Trade", credit: 2, type: "Theory" },
-                    { code: "110404", "name": "Mathematics–III (Probability and Statistics)", credit: 4, type: "Theory" },
-                    { code: "110405", name: "Microprocessors", credit: 3, type: "Theory" },
-                    { code: "110406", name: "Signals and Systems", credit: 3, type: "Theory" },
-                    { code: "110401P", name: "Analog Electronics", credit: 1, type: "Practical" },
-                    { code: "110402P", name: "Electrical Machines – II", credit: 1, type: "Practical" },
-                    { code: "110405P", name: "Microprocessors", credit: 1, type: "Practical" }
+                    { "code": "100401", "name": "Biology for Engineers", "credit": 3, "type": "Theory" },
+                    { "code": "110401", "name": "Analog Electronics", "credit": 3, "type": "Theory" },
+                    { "code": "110402", "name": "Electrical Machines – II", "credit": 3, "type": "Theory" },
+                    { "code": "110403", "name": "Industrial Economics & Foreign Trade", "credit": 2, "type": "Theory" },
+                    { "code": "110404", "name": "Mathematics–III (Probability and Statistics)", "credit": 4, "type": "Theory" },
+                    { "code": "110405", "name": "Microprocessors", "credit": 3, "type": "Theory" },
+                    { "code": "110406", "name": "Signals and Systems", "credit": 3, "type": "Theory" },
+                    { "code": "110401P", "name": "Analog Electronics", "credit": 1, "type": "Practical" },
+                    { "code": "110402P", "name": "Electrical Machines – II", "credit": 1, "type": "Practical" },
+                    { "code": "110405P", "name": "Microprocessors", "credit": 1, "type": "Practical" }
                 ],
                 "5": [
-                    { code: "100502", name: "Control Systems", credit: 3, type: "Theory" },
-                    { code: "100506", name: "Power Electronics", credit: 3, type: "Theory" },
-                    { code: "100507", name: "Power Systems–I (Apparatus and Modelling)", credit: 3, type: "Theory" },
-                    { code: "110501", name: "Analog & Digital Communication System", credit: 3, type: "Theory" },
-                    { code: "100502P", name: "Control Systems", credit: 1, type: "Practical" },
-                    { code: "100506P", name: "Power Electronics", credit: 1, type: "Practical" },
-                    { code: "100507P", name: "Power Systems–I (Apparatus and Modelling)", credit: 1, type: "Practical" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "Special" },
-                    { code: "110501P", name: "Analog & Digital Communication System", credit: 1, type: "Practical" },
-                    { code: "110504", name: "Simulation Tools for Electrical & Electronics Engineering", credit: 1, type: "Theory" }
+                    { "code": "100502", "name": "Control Systems", "credit": 3, "type": "Theory" },
+                    { "code": "100506", "name": "Power Electronics", "credit": 3, "type": "Theory" },
+                    { "code": "100507", "name": "Power Systems–I (Apparatus and Modelling)", "credit": 3, "type": "Theory" },
+                    { "code": "110501", "name": "Analog & Digital Communication System", "credit": 3, "type": "Theory" },
+                    { "code": "100502P", "name": "Control Systems", "credit": 1, "type": "Practical" },
+                    { "code": "100506P", "name": "Power Electronics", "credit": 1, "type": "Practical" },
+                    { "code": "100507P", "name": "Power Systems–I (Apparatus and Modelling)", "credit": 1, "type": "Practical" },
+                    { "code": "100510", "name": "Summer Entrepreneurship – II", "credit": 6, "type": "Special" },
+                    { "code": "100511", "name": "MOOCs / SWAYAM / NPTEL Courses 2", "credit": 2, "type": "Special" },
+                    { "code": "110501P", "name": "Analog & Digital Communication System", "credit": 1, "type": "Practical" },
+                    { "code": "11050A", "name": "Professional Elective Laboratory I", "credit": 1, "type": "Practical" }
+                ],
+                "6": [
+                    { "code": "100606", "name": "Digital Signal Processing", "credit": 3, "type": "Theory" },
+                    { "code": "100607", "name": "Introduction to VLSI Design", "credit": 3, "type": "Theory" },
+                    { "code": "100608", "name": "Professional Skill Development", "credit": 3, "type": "Theory" },
+                    { "code": "10060A", "name": "Program Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "110601", "name": "Measurements and Instrumentation", "credit": 3, "type": "Theory" },
+                    { "code": "11060B", "name": "Program Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "100606P", "name": "Digital Signal Processing LAB", "credit": 1, "type": "Practical" },
+                    { "code": "100607P", "name": "Introduction to VLSI Design LAB", "credit": 1, "type": "Practical" },
+                    { "code": "10060CP", "name": "Professional Elective Laboratory II", "credit": 2, "type": "Practical" },
+                    { "code": "100608P", "name": "Measurements and Instrumentation LAB", "credit": 1, "type": "Practical" }
+                ],
+                "7": [
+                    { "code": "11070A", "name": "Open Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "1107AB", "name": "Open Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "11072A", "name": "Program Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "1107AC", "name": "Program Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "100702P", "name": "Summer Entrepreneurship-III", "credit": 8, "type": "Practical" },
+                    { "code": "100706P", "name": "Seminar", "credit": 1, "type": "Practical" },
+                    { "code": "100709P", "name": "Project I", "credit": 6, "type": "Practical" }
+                ],
+                "8": [
+                    { "code": "10081A", "name": "Open Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "11080A", "name": "Open Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "11080B", "name": "Program Elective V", "credit": 3, "type": "Theory" },
+                    { "code": "11081C", "name": "Program Elective VI", "credit": 3, "type": "Theory" },
+                    { "code": "100801P", "name": "Project II", "credit": 6, "type": "Practical" }
+                ]
+            },
+            "Electronics And Communication": {
+                "1": [
+                    { "code": "100110", "name": "Engineering Physics", "credit": 3, "type": "Theory" },
+                    { "code": "100102", "name": "Engineering Mathematics-I", "credit": 4, "type": "Theory" },
+                    { "code": "100111", "name": "Programming for Problem Solving", "credit": 4, "type": "Theory" },
+                    { "code": "100106", "name": "Basic Electrical Engineering", "credit": 3, "type": "Theory" },
+                    { "code": "100112", "name": "Workshop Practices", "credit": 2, "type": "Theory" },
+                    { "code": "100115P", "name": "Swachha Bharat Mission (SBM)", "credit": 1, "type": "Practical" },
+                    { "code": "100110P", "name": "Engineering Physics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100111P", "name": "Programming for Problem Solving Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100106P", "name": "Basic Electrical Engineering Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100112P", "name": "Workshop Practices Lab", "credit": 1, "type": "Practical" }
+                ],
+                "2": [
+                    { "code": "100215", "name": "Engineering Chemistry", "credit": 3, "type": "Theory" },
+                    { "code": "100202", "name": "Engineering Mathematics-II", "credit": 4, "type": "Theory" },
+                    { "code": "100216", "name": "Communicative English", "credit": 3, "type": "Theory" },
+                    { "code": "100220P", "name": "Sports/YogaNCC/NSS", "credit": 1, "type": "Practical" },
+                    { "code": "100209", "name": "Basic Electronics", "credit": 3, "type": "Theory" },
+                    { "code": "100217", "name": "Engineering Graphics & Design", "credit": 1, "type": "Theory" },
+                    { "code": "100215P", "name": "Engineering Chemistry Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100216P", "name": "Communicative English Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100209P", "name": "Basic Electronics Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100217P", "name": "Engineering Graphics & Design Lab", "credit": 2, "type": "Practical" }
+                ],
+                "3": [
+                    { "code": "100313", "name": "OBJECT ORIENTED PROGRAMMING USING C++", "credit": 3, "type": "Theory" },
+                    { "code": "104301", "name": "BASIC ELECTRONICS", "credit": 3, "type": "Theory" },
+                    { "code": "104302", "name": "ELECTRICAL & ELECTRONIC MATERIAL", "credit": 3, "type": "Theory" },
+                    { "code": "104303", "name": "MATHEMATICS-III", "credit": 3, "type": "Theory" },
+                    { "code": "104304", "name": "NETWORK THEORY", "credit": 4, "type": "Theory" },
+                    { "code": "104305", "name": "SIGNALS AND SYSTEMS", "credit": 3, "type": "Theory" },
+                    { "code": "100313P", "name": "Object Oriented Programming Lab", "credit": 1, "type": "Practical" },
+                    { "code": "100399", "name": "Internship", "credit": 4, "type": "Special" },
+                    { "code": "104301P", "name": "Basic Electronic Science Lab", "credit": 1, "type": "Practical" },
+                    { "code": "104302P", "name": "Electrical and Electronic Material Lab", "credit": 1, "type": "Practical" }
+                ],
+                "4": [
+                    { "code": "104401", "name": "Analog Circuits", "credit": 3, "type": "Theory" },
+                    { "code": "104402", "name": "Analog Communication", "credit": 3, "type": "Theory" },
+                    { "code": "104403", "name": "Digital Circuits", "credit": 4, "type": "Theory" },
+                    { "code": "104404", "name": "Electromagnetic Theory", "credit": 4, "type": "Theory" },
+                    { "code": "104405", "name": "Semiconductor Physics and Devices", "credit": 3, "type": "Theory" },
+                    { "code": "100408", "name": "MOOCs / SWAYAM / NPTEL Courses - 1", "credit": 2, "type": "Special" },
+                    { "code": "104401P", "name": "Analog Circuits", "credit": 1, "type": "Practical" },
+                    { "code": "104402P", "name": "Analog Communication", "credit": 1, "type": "Practical" },
+                    { "code": "104403P", "name": "Digital Circuits", "credit": 1, "type": "Practical" },
+                    { "code": "104405P", "name": "Semiconductor Physics and Devices", "credit": 1, "type": "Practical" }
+                ],
+                "5": [
+                    { "code": "104501", "name": "Computer Networks and Security", "credit": 3, "type": "Theory" },
+                    { "code": "104502", "name": "Digital Signal Processing", "credit": 3, "type": "Theory" },
+                    { "code": "104503", "name": "Linear Control Systems", "credit": 4, "type": "Theory" },
+                    { "code": "104504", "name": "Linear Integrated Circuits and Applications", "credit": 3, "type": "Theory" },
+                    { "code": "104505", "name": "Microprocessors and Microcontrollers", "credit": 3, "type": "Theory" },
+                    { "code": "104506", "name": "Probability Theory and Stochastic Processes", "credit": 3, "type": "Theory" },
+                    { "code": "100510", "name": "Summer Entrepreneurship - II", "credit": 6, "type": "Special" },
+                    { "code": "104502P", "name": "Digital Signal Processing", "credit": 1, "type": "Practical" },
+                    { "code": "104504P", "name": "Linear Integrated Circuits and Applications", "credit": 1, "type": "Practical" },
+                    { "code": "104505P", "name": "Microprocessors and Microcontrollers", "credit": 1, "type": "Practical" }
+                ],
+                "6": [
+                    { "code": "100601", "name": "Biology for Engineers", "credit": 3, "type": "Theory" },
+                    { "code": "104601", "name": "Computer Organization and Architecture", "credit": 3, "type": "Theory" },
+                    { "code": "104602", "name": "Digital Communication", "credit": 4, "type": "Theory" },
+                    { "code": "104604", "name": "Electronics Instruments and Measurement", "credit": 4, "type": "Theory" },
+                    { "code": "10460A", "name": "Program Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "100604", "name": "MOOCs / SWAYAM / NPTEL Courses - 2", "credit": 2, "type": "Special" },
+                    { "code": "104602P", "name": "Digital Communication", "credit": 1, "type": "Practical" },
+                    { "code": "104604P", "name": "Electronics Instruments and Measurement", "credit": 1, "type": "Practical" }
+                ],
+                "7": [
+                    { "code": "104701", "name": "Business Analytics", "credit": 3, "type": "Theory" },
+                    { "code": "104702", "name": "Cost Management of Engineering Projects", "credit": 3, "type": "Theory" },
+                    { "code": "104703", "name": "Wireless Communication", "credit": 3, "type": "Theory" },
+                    { "code": "10470A", "name": "Program Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "1047AB", "name": "Program Elective III", "credit": 3, "type": "Theory" },
+                    { "code": "100702P", "name": "Summer Entrepreneurship - III", "credit": 8, "type": "Practical" },
+                    { "code": "100709P", "name": "Project - I", "credit": 6, "type": "Practical" }
+                ],
+                "8": [
+                    { "code": "10081X", "name": "Open Elective I", "credit": 3, "type": "Theory" },
+                    { "code": "10081B", "name": "Open Elective II", "credit": 3, "type": "Theory" },
+                    { "code": "10480X", "name": "Program Elective IV", "credit": 3, "type": "Theory" },
+                    { "code": "10481Y", "name": "Program Elective V", "credit": 3, "type": "Theory" },
+                    { "code": "100801P", "name": "Project II", "credit": 6, "type": "Practical" }
                 ]
             }
         };
@@ -532,14 +741,12 @@
         const resultContainer = document.getElementById('result-container');
         const resultText = document.getElementById('result-text');
 
-        // --- Helper Function to get Ordinal Numbers (1st, 2nd, 3rd) ---
         function toOrdinal(n) {
             const s = ["th", "st", "nd", "rd"];
             const v = n % 100;
             return n + (s[(v - 20) % 10] || s[v] || s[0]);
         }
         
-        // Functions
         function populateBranches() {
             const branches = Object.keys(universityData);
             branches.forEach(branch => {
@@ -570,21 +777,10 @@
             calculateBtn.classList.add('hidden');
             resultContainer.classList.add('hidden');
 
-            if (!branch || !semester || !universityData[branch][semester]) {
-                return;
-            }
+            if (!branch || !semester || !universityData[branch][semester]) return;
             
             const subjects = universityData[branch][semester];
-
-            const thead = `
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Credit</th>
-                        <th>Marks Obtained</th>
-                    </tr>
-                </thead>
-            `;
+            const thead = `<thead><tr><th>Subject</th><th>Credit</th><th>Marks Obtained</th></tr></thead>`;
             const tbody = document.createElement('tbody');
 
             subjects.forEach((subject) => {
@@ -592,32 +788,31 @@
                 row.dataset.credit = subject.credit;
                 row.dataset.type = subject.type;
                 
+                let subjectHtml = '';
                 let marksInputHtml = '';
-                if (subject.type === 'Theory') {
-                    marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese" title="End Semester Exam Marks">
-                        <input type="number" class="marks-input" placeholder="IA (30)" min="0" max="30" data-mark-type="ia" title="Internal Assessment Marks">
-                    `;
-                } else if (subject.type === 'Practical') {
-                     // --- UPDATED: Practical marks split into 30 and 20 ---
-                     marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="ESE (30)" min="0" max="30" data-mark-type="prac_ese" title="Practical End Semester Exam Marks">
-                        <input type="number" class="marks-input" placeholder="IA (20)" min="0" max="20" data-mark-type="prac_ia" title="Practical Internal Assessment Marks">
-                    `;
-                } else if (subject.type === 'Special') {
-                    marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="Total (100)" min="0" max="100" data-mark-type="total" title="Total Marks">
-                    `;
+
+                if (subject.type === 'Theory' || subject.type === 'Practical' || subject.type === 'Special') {
+                    subjectHtml = `<div class="subject-name">${subject.name}</div><div class="subject-code">${subject.code}</div>`;
+                    if (subject.type === 'Theory') {
+                        marksInputHtml = `<input type="number" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese"><input type="number" placeholder="IA (30)" min="0" max="30" data-mark-type="ia">`;
+                    } else if (subject.type === 'Practical') {
+                        marksInputHtml = `<input type="number" placeholder="ESE (30)" min="0" max="30" data-mark-type="prac_ese"><input type="number" placeholder="IA (20)" min="0" max="20" data-mark-type="prac_ia">`;
+                    } else { // Special
+                        marksInputHtml = `<input type="number" placeholder="Total (100)" min="0" max="100" data-mark-type="total">`;
+                    }
+                } else if (subject.type === 'Elective') {
+                    let optionsHtml = subject.options.map(opt => `<option value="${opt.code}">${opt.name} (${opt.code})</option>`).join('');
+                    subjectHtml = `
+                        <div class="subject-name">${subject.name}</div>
+                        <select class="elective-select">${optionsHtml}</select>`;
+                    // Assuming all electives are theory based on provided data
+                    marksInputHtml = `<input type="number" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese"><input type="number" placeholder="IA (30)" min="0" max="30" data-mark-type="ia">`;
                 }
 
                 row.innerHTML = `
-                    <td>
-                        <div class="subject-name">${subject.name}</div>
-                        <div class="subject-code">${subject.code}</div>
-                    </td>
+                    <td>${subjectHtml}</td>
                     <td>${subject.credit}</td>
-                    <td class="marks-container">${marksInputHtml}</td>
-                `;
+                    <td class="marks-container">${marksInputHtml}</td>`;
                 tbody.appendChild(row);
             });
             subjectTable.innerHTML = thead;
@@ -645,57 +840,40 @@
                 const credit = parseFloat(row.dataset.credit);
                 const type = row.dataset.type;
                 let gradePoint = 0;
-
                 totalCredits += credit;
                 
-                if (type === 'Theory') {
+                if (type === 'Theory' || type === 'Elective') {
                     const eseInput = row.querySelector('[data-mark-type="ese"]');
                     const iaInput = row.querySelector('[data-mark-type="ia"]');
+                    if (!eseInput || !iaInput) { allInputsValid = false; return; }
                     const eseMarks = parseInt(eseInput.value, 10);
                     const iaMarks = parseInt(iaInput.value, 10);
-
-                    if (isNaN(eseMarks) || isNaN(iaMarks)) {
-                        allInputsValid = false;
-                        return;
-                    }
-                    
-                    if (eseMarks < 25) { // Fail condition
+                    if (isNaN(eseMarks) || isNaN(iaMarks)) { allInputsValid = false; return; }
+                    if (eseMarks < 25) {
                         gradePoint = 0;
                     } else {
-                        const totalMarks = eseMarks + iaMarks;
-                        gradePoint = getGradePoint(totalMarks);
+                        gradePoint = getGradePoint(eseMarks + iaMarks);
                     }
                 } else if (type === 'Practical') {
-                    // --- UPDATED: Logic to handle 2 practical inputs ---
                     const pracEseInput = row.querySelector('[data-mark-type="prac_ese"]');
                     const pracIaInput = row.querySelector('[data-mark-type="prac_ia"]');
+                    if (!pracEseInput || !pracIaInput) { allInputsValid = false; return; }
                     const pracEseMarks = parseInt(pracEseInput.value, 10);
                     const pracIaMarks = parseInt(pracIaInput.value, 10);
-                    
-                    if (isNaN(pracEseMarks) || isNaN(pracIaMarks)) {
-                        allInputsValid = false;
-                        return;
-                    }
-
+                    if (isNaN(pracEseMarks) || isNaN(pracIaMarks)) { allInputsValid = false; return; }
                     const totalMarks = pracEseMarks + pracIaMarks;
-                    
-                    if (totalMarks < 20) { // Fail condition (40% of 50)
+                    if (totalMarks < 20) {
                         gradePoint = 0;
                     } else {
-                        const percentage = (totalMarks / 50) * 100;
-                        gradePoint = getGradePoint(percentage);
+                        gradePoint = getGradePoint((totalMarks / 50) * 100);
                     }
-                } else if (type === 'Special') { // --- FIXED: Bug was here ---
+                } else if (type === 'Special') {
                     const totalInput = row.querySelector('[data-mark-type="total"]');
+                     if (!totalInput) { allInputsValid = false; return; }
                     const totalMarks = parseInt(totalInput.value, 10);
-
-                    if (isNaN(totalMarks)) {
-                        allInputsValid = false;
-                        return;
-                    }
+                    if (isNaN(totalMarks)) { allInputsValid = false; return; }
                     gradePoint = getGradePoint(totalMarks);
                 }
-
                 totalWeightedGradePoints += credit * gradePoint;
             });
 
@@ -708,27 +886,20 @@
                 resultText.innerHTML = "Cannot calculate SGPA as Total Credits are 0.";
             } else {
                 const sgpa = totalWeightedGradePoints / totalCredits;
-                resultText.innerHTML = `
-                    Total Credits: <strong>${totalCredits.toFixed(2)}</strong><br>
-                    Your SGPA is: <p class="result-sgpa">${sgpa.toFixed(2)}</p>
-                `;
+                resultText.innerHTML = `Total Credits: <strong>${totalCredits.toFixed(2)}</strong><br>Your SGPA is: <p class="result-sgpa">${sgpa.toFixed(2)}</p>`;
             }
             resultContainer.classList.remove('hidden');
         }
 
-
         // Event Listeners
         document.addEventListener('DOMContentLoaded', populateBranches);
-
         branchSelect.addEventListener('change', (e) => {
             populateSemesters(e.target.value);
             generateSubjectTable(null, null);
         });
-        
         semesterSelect.addEventListener('change', (e) => {
             generateSubjectTable(branchSelect.value, e.target.value);
         });
-
         calculateBtn.addEventListener('click', calculateSGPA);
 
     </script>
