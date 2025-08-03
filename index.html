@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,6 +42,8 @@
             margin-top: 0;
             margin-bottom: 5px;
             font-size: 2rem;
+            /* Hindi font support */
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
         }
 
         header h2 {
@@ -183,6 +185,9 @@
             display: none;
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -194,15 +199,15 @@
 
         <div class="controls">
             <div class="control-group">
-                <label for="select-branch">Select your Branch</label>
-                <select id="select-branch">
-                    <option value="">-- Select your Branch --</option>
+                <label for="branch-select">Select Branch</label>
+                <select id="branch-select">
+                    <option value="">-- Select Branch --</option>
                 </select>
             </div>
             <div class="control-group">
-                <label for="select-semester">Select your semester </label>
-                <select id="select-semester" disabled>
-                    <option value="">-- Select your semester --</option>
+                <label for="semester-select">Select Semester</label>
+                <select id="semester-select" disabled>
+                    <option value="">-- Select Semester --</option>
                 </select>
             </div>
         </div>
@@ -215,7 +220,7 @@
         <button id="calculate-btn" class="calc-button hidden">Calculate SGPA</button>
 
         <div id="result-container" class="result-container hidden">
-            <h3>Aapka Result</h3>
+            <h3>Your Result</h3>
             <p id="result-text"></p>
         </div>
     </div>
@@ -324,7 +329,7 @@
                     { code: "105403", name: "Operating Systems", credit: 3, type: "Theory" },
                     { code: "100403P", name: "Digital Electronics", credit: 2, type: "Practical" },
                     { code: "105401P", name: "Computer Organization & Architecture", credit: 2, type: "Practical" },
-                    { code: "105402P", name: "Design & Analysis of Algorithms", credit: 2, type: "Practical" },
+                    { code: "105402P", "name": "Design & Analysis of Algorithms", credit: 2, type: "Practical" },
                     { code: "105403P", name: "Operating Systems", credit: 2, type: "Practical" }
                 ],
                 "5": [
@@ -523,6 +528,13 @@
         const resultContainer = document.getElementById('result-container');
         const resultText = document.getElementById('result-text');
 
+        // --- Helper Function to get Ordinal Numbers (1st, 2nd, 3rd) ---
+        function toOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+        
         // Functions
         function populateBranches() {
             const branches = Object.keys(universityData);
@@ -535,14 +547,15 @@
         }
 
         function populateSemesters(branch) {
-            semesterSelect.innerHTML = '<option value="">-- Semester Chunein --</option>';
+            semesterSelect.innerHTML = '<option value="">-- Select Semester --</option>';
             semesterSelect.disabled = true;
             if (branch && universityData[branch]) {
                 const semesters = Object.keys(universityData[branch]);
                 semesters.forEach(sem => {
                     const option = document.createElement('option');
                     option.value = sem;
-                    option.textContent = `${sem}`;
+                    // --- UPDATED to show 1st, 2nd, etc. ---
+                    option.textContent = `${toOrdinal(parseInt(sem, 10))} Semester`;
                     semesterSelect.appendChild(option);
                 });
                 semesterSelect.disabled = false;
@@ -579,16 +592,16 @@
                 let marksInputHtml = '';
                 if (subject.type === 'Theory') {
                     marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese">
-                        <input type="number" class="marks-input" placeholder="IA (30)" min="0" max="30" data-mark-type="ia">
+                        <input type="number" class="marks-input" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese" title="End Semester Exam Marks">
+                        <input type="number" class="marks-input" placeholder="IA (30)" min="0" max="30" data-mark-type="ia" title="Internal Assessment Marks">
                     `;
                 } else if (subject.type === 'Practical') {
                      marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="Total (50)" min="0" max="50" data-mark-type="total">
+                        <input type="number" class="marks-input" placeholder="Total (50)" min="0" max="50" data-mark-type="total" title="Total Practical Marks">
                     `;
                 } else if (subject.type === 'Special') {
                     marksInputHtml = `
-                        <input type="number" class="marks-input" placeholder="Total (100)" min="0" max="100" data-mark-type="total">
+                        <input type="number" class="marks-input" placeholder="Total (100)" min="0" max="100" data-mark-type="total" title="Total Marks">
                     `;
                 }
 
@@ -662,7 +675,7 @@
                         const percentage = (totalMarks / 50) * 100;
                         gradePoint = getGradePoint(percentage);
                     }
-                } else if (type === 'Special') {
+                } else if (subject.type === 'Special') {
                     const totalInput = row.querySelector('[data-mark-type="total"]');
                     const totalMarks = parseInt(totalInput.value, 10);
 
@@ -678,17 +691,19 @@
             });
 
             if (!allInputsValid) {
-                alert('Kripya sabhi subjects ke marks daalein.');
+                // --- UPDATED Alert Message ---
+                alert('Please enter marks for all subjects.');
                 return;
             }
 
             if (totalCredits === 0) {
-                resultText.innerHTML = "Credits 0 hain, SGPA calculate nahi kiya ja sakta.";
+                resultText.innerHTML = "Cannot calculate SGPA as Total Credits are 0.";
             } else {
                 const sgpa = totalWeightedGradePoints / totalCredits;
+                // --- UPDATED Result Text ---
                 resultText.innerHTML = `
                     Total Credits: <strong>${totalCredits.toFixed(2)}</strong><br>
-                    Aapka SGPA Hai: <p class="result-sgpa">${sgpa.toFixed(2)}</p>
+                    Your SGPA is: <p class="result-sgpa">${sgpa.toFixed(2)}</p>
                 `;
             }
             resultContainer.classList.remove('hidden');
