@@ -1,920 +1,715 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGPA Calculator</title>
+    <title>BEU SGPA Calculator</title>
     <style>
-        /* style.css content starts here */
+        :root {
+            --dark-bg: #1a1a1a;
+            --primary-orange: #ff8c00;
+            --light-text: #f0f0f0;
+            --card-bg: #2c2c2c;
+            --border-color: #444;
+            --input-bg: #3a3a3a;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a; /* Dark background */
-            color: #f0f0f0; /* Light text */
+            font-family: Arial, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            box-sizing: border-box;
         }
 
-        .container {
-            background-color: #2a2a2a; /* Slightly lighter dark background for container */
-            padding: 30px;
+        .calculator-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-bg);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 800px;
-            box-sizing: border-box;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
         }
 
-        h1 {
-            color: #ff8c00; /* Orange highlight */
+        header h1 {
+            color: var(--primary-orange);
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-            letter-spacing: 1px;
-        }
-
-        .selection-section, .subject-entry-section {
-            background-color: #333333;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group label {
-            margin-bottom: 8px;
-            color: #cccccc;
-            font-size: 1.1em;
-        }
-
-        .input-group select,
-        .input-group input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 12px;
-            border: 1px solid #555;
-            border-radius: 6px;
-            background-color: #444;
-            color: #f0f0f0;
-            font-size: 1em;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .input-group select:focus,
-        .input-group input[type="number"]:focus {
-            border-color: #ff8c00;
-            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.3);
-            outline: none;
-        }
-
-        .input-group input[type="number"]::-webkit-inner-spin-button,
-        .input-group input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .input-group input[type="number"] {
-            -moz-appearance: textfield; /* Firefox */
-        }
-
-        .subjects-container {
-            padding: 20px;
-            background-color: #333333;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            min-height: 100px; /* Placeholder height */
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .placeholder-text {
-            color: #999;
-            text-align: center;
-            font-style: italic;
-            padding: 30px 0;
-        }
-
-        .subject-section h3 {
-            color: #ff8c00;
             margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #555;
-            padding-bottom: 5px;
+            margin-bottom: 5px;
+            font-size: 2rem;
         }
 
-        .subject-item {
+        header h2 {
+            text-align: center;
+            color: var(--light-text);
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+        
+        .controls {
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            align-items: center;
-            justify-content: space-between;
-            background-color: #444;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
-        .subject-details {
-            flex: 2; /* Takes more space for name and credit */
-            margin-right: 15px;
-            min-width: 200px; /* Ensure it doesn't get too small */
-        }
-
-        .subject-details .name {
-            font-weight: bold;
-            color: #f0f0f0;
-        }
-
-        .subject-details .credit {
-            font-size: 0.9em;
-            color: #bbb;
-        }
-
-        .marks-input {
-            flex: 1; /* Takes remaining space for inputs */
-            display: flex;
-            gap: 10px;
-            min-width: 180px; /* Ensure inputs have enough space */
-        }
-
-        .marks-input input {
+        .control-group {
             flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            color: var(--light-text);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .subject-table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #333;
+            color: var(--primary-orange);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        td {
+           vertical-align: middle;
+        }
+
+        .subject-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .subject-code {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            background-color: var(--input-bg);
+            color: var(--light-text);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             text-align: center;
         }
+        
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
 
-        .btn {
-            background-color: #ff8c00; /* Orange button */
-            color: white;
-            padding: 14px 25px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
+        .calc-button {
             width: 100%;
-            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--primary-orange);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #e67e00; /* Darker orange on hover */
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            opacity: 0.7;
-            transform: none;
+        .calc-button:hover {
+            background-color: #ffac4d;
         }
 
         .result-container {
-            background-color: #333333;
+            margin-top: 30px;
+            background-color: var(--input-bg);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 5px;
             text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ff8c00;
-            margin-top: 20px;
-            min-height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border-left: 5px solid var(--primary-orange);
+        }
+        
+        .result-container h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary-orange);
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 1.8em;
-            }
-            .subject-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .subject-details {
-                margin-right: 0;
-                min-width: unset;
-                width: 100%;
-            }
-            .marks-input {
-                width: 100%;
-                min-width: unset;
-            }
-            .btn {
-                    padding: 12px 20px;
-                    font-size: 1em;
-            }
+        .result-container p {
+            margin: 5px 0;
+            font-size: 1.2rem;
         }
-        /* style.css content ends here */
+
+        .result-sgpa {
+            font-weight: bold;
+            font-size: 2rem !important;
+            color: #fff;
+        }
+        
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>SGPA Calculator</h1>
 
-        <div class="selection-section">
-            <div class="input-group">
-                <label for="branchSelect">Select Branch:</label>
-                <select id="branchSelect">
-                    <option value="">-- Select Branch --</option>
-                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                    <option value="CSE Core">CSE Core</option>
-                    <option value="Civil Engineering">Civil Engineering</option>
-                    <option value="Chemical Engineering">Chemical Engineering</option>
-                    <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering</option>
-                    </select>
+    <div class="calculator-container">
+        <header>
+            <h1>बिहार अभियंत्रण विश्वविद्यालय, पटना</h1>
+            <h2>SGPA Calculator</h2>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="branch-select">Branch Select Karein</label>
+                <select id="branch-select">
+                    <option value="">-- Branch Chunein --</option>
+                </select>
             </div>
-
-            <div class="input-group">
-                <label for="semesterSelect">Select Semester:</label>
-                <select id="semesterSelect" disabled>
-                    <option value="">-- Select Semester --</option>
+            <div class="control-group">
+                <label for="semester-select">Semester Select Karein</label>
+                <select id="semester-select" disabled>
+                    <option value="">-- Semester Chunein --</option>
                 </select>
             </div>
         </div>
-
-        <div id="subjectsContainer" class="subjects-container">
-            <p class="placeholder-text">Please select your Branch and Semester to load subjects.</p>
+        
+        <div class="subject-table-container">
+            <table id="subject-table">
+                </table>
         </div>
 
-        <button id="calculateSGPABtn" class="btn" disabled>Calculate SGPA</button>
-        <button id="downloadPdfBtn" class="btn" disabled>Download as PDF</button>
+        <button id="calculate-btn" class="calc-button hidden">Calculate SGPA</button>
 
-        <div id="resultContainer" class="result-container">
-            </div>
+        <div id="result-container" class="result-container hidden">
+            <h3>Aapka Result</h3>
+            <p id="result-text"></p>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <script>
-        /* data.js content starts here */
-        const subjectsData = {
-            "Mechanical Engineering": {
-                "1st Semester": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "practical" }
+        const universityData = {
+            "Mechanical": {
+                "1": [
+                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
+                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
+                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
+                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
+                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
+                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
+                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
+                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
                 ],
-                "2nd Semester": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "practical" },
-                    { code: "100206", name: "Workshop Practices", credit: 2, type: "theory" },
-                    { code: "100204", name: "Elements of Mechanical Engineering", credit: 3, type: "theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" },
-                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "practical" },
-                    { code: "100204P", name: "Elements of Mechanical Engineering Lab", credit: 1, type: "practical" }
+                "2": [
+                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
+                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
+                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
+                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
+                    { code: "100206", name: "Workshop Practices", credit: 2, type: "Theory" },
+                    { code: "100204", name: "Elements of Mechanical Engineering", credit: 3, type: "Theory" },
+                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
+                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
+                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "Practical" },
+                    { code: "100204P", name: "Elements of Mechanical Engineering Lab", credit: 1, type: "Practical" }
                 ],
-                "3rd Semester": [
-                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 3, type: "theory" },
-                    { code: "100303", name: "BASIC ELECTRONICS ENGINEERING", credit: 4, type: "theory" },
-                    { code: "100309", name: "ENGINEERING MECHANICS", credit: 3, type: "theory" },
-                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILILTY AND STATISTICS)", credit: 4, type: "theory" },
-                    { code: "102304", name: "THERMODYNAMICS", credit: 4, type: "theory" },
-                    { code: "100309P", name: "ENGINEERING MECHANICS", credit: 1, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" },
-                    { code: "102302P", name: "Machine Drawing", credit: 2, type: "practical" }
+                "3": [
+                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 3, type: "Theory" },
+                    { code: "100303", name: "BASIC ELECTRONICS ENGINEERING", credit: 4, type: "Theory" },
+                    { code: "100309", name: "ENGINEERING MECHANICS", credit: 3, type: "Theory" },
+                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILILTY AND STATISTICS)", credit: 4, type: "Theory" },
+                    { code: "102304", name: "THERMODYNAMICS", credit: 4, type: "Theory" },
+                    { code: "100309P", name: "ENGINEERING MECHANICS", credit: 1, type: "Practical" },
+                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
+                    { code: "102302P", name: "Machine Drawing", credit: 2, type: "Practical" }
                 ],
-                "4th Semester": [
-                    { code: "102401", name: "Applied Thermodynamics", credit: 4, type: "theory" },
-                    { code: "102402", name: "Engineering Materials", credit: 4, type: "theory" },
-                    { code: "102403", name: "Fluid Mechanics", credit: 3, type: "theory" },
-                    { code: "102404", name: "Instrumentation & Control", credit: 4, type: "theory" },
-                    { code: "102405", name: "Strength of Materials", credit: 3, type: "theory" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" },
-                    { code: "102403P", name: "Fluid Mechanics LAB", credit: 1.50, type: "practical" },
-                    { code: "102405P", name: "Strength of Materials LAB", credit: 1.50, type: "practical" }
+                "4": [
+                    { code: "102401", name: "Applied Thermodynamics", credit: 4, type: "Theory" },
+                    { code: "102402", name: "Engineering Materials", credit: 4, type: "Theory" },
+                    { code: "102403", name: "Fluid Mechanics", credit: 3, type: "Theory" },
+                    { code: "102404", name: "Instrumentation & Control", credit: 4, type: "Theory" },
+                    { code: "102405", name: "Strength of Materials", credit: 3, type: "Theory" },
+                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "Special" },
+                    { code: "102403P", name: "Fluid Mechanics LAB", credit: 1.50, type: "Practical" },
+                    { code: "102405P", name: "Strength of Materials LAB", credit: 1.50, type: "Practical" }
                 ],
-                "5th Semester": [
-                    { code: "102501", name: "Fluid Machinery", credit: 3, type: "theory" },
-                    { code: "102502", name: "Heat Transfer", credit: 3, type: "theory" },
-                    { code: "102503", name: "Kinematics of Machine", credit: 4, type: "theory" },
-                    { code: "102504", name: "Manufacturing Processes", credit: 3, type: "theory" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses – 2", credit: 2, type: "special_100" },
-                    { code: "102501P", name: "Fluid Machinery", credit: 1.50, type: "practical" },
-                    { code: "102502P", name: "Heat Transfer", credit: 1.50, type: "practical" },
-                    { code: "102504P", name: "Manufacturing Processes", credit: 1.50, type: "practical" }
+                "5": [
+                    { code: "102501", name: "Fluid Machinery", credit: 3, type: "Theory" },
+                    { code: "102502", name: "Heat Transfer", credit: 3, type: "Theory" },
+                    { code: "102503", name: "Kinematics of Machine", credit: 4, type: "Theory" },
+                    { code: "102504", name: "Manufacturing Processes", credit: 3, type: "Theory" },
+                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses – 2", credit: 2, type: "Special" },
+                    { code: "102501P", name: "Fluid Machinery", credit: 1.50, type: "Practical" },
+                    { code: "102502P", name: "Heat Transfer", credit: 1.50, type: "Practical" },
+                    { code: "102504P", name: "Manufacturing Processes", credit: 1.50, type: "Practical" }
                 ]
             },
-            "CSE Core": {
-                "1st Semester": [
-                    { code: "100110", name: "Engineering Physics", credit: 3, type: "theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100115P", name: "Swachha Bharat Mission", credit: 1, type: "practical" },
-                    { code: "100113", name: "IT Workshop", credit: 2, type: "theory" },
-                    { code: "100114", name: "Basic Electronics Engineering", credit: 3, type: "theory" },
-                    { code: "100110P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
-                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" },
-                    { code: "100113P", name: "IT Workshop Lab", credit: 1, type: "practical" },
-                    { code: "100114P", name: "Basic Electronics Engineering Lab", credit: 1, type: "practical" }
+            "CSE": {
+                "1": [
+                    { code: "100110", name: "Engineering Physics", credit: 3, type: "Theory" },
+                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
+                    { code: "100115P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
+                    { code: "100113", name: "IT Workshop", credit: 2, type: "Theory" },
+                    { code: "100114", name: "Basic Electronics Engineering", credit: 3, type: "Theory" },
+                    { code: "100110P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
+                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
+                    { code: "100113P", name: "IT Workshop Lab", credit: 1, type: "Practical" },
+                    { code: "100114P", name: "Basic Electronics Engineering Lab", credit: 1, type: "Practical" }
                 ],
-                "2nd Semester": [
-                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "theory" },
-                    { code: "100216", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100220P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" },
-                    { code: "100218", name: "Python Programming", credit: 2, type: "theory" },
-                    { code: "100219", name: "Introduction to Web Design", credit: 3, type: "theory" },
-                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
-                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "practical" },
-                    { code: "100218P", name: "Python Programming Lab", credit: 1, type: "practical" },
-                    { code: "100219P", name: "Introduction to Web Design Lab", credit: 1, type: "practical" }
+                "2": [
+                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "Theory" },
+                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
+                    { code: "100216", name: "Communicative English", credit: 3, type: "Theory" },
+                    { code: "100220P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
+                    { code: "100218", name: "Python Programming", credit: 2, type: "Theory" },
+                    { code: "100219", name: "Introduction to Web Design", credit: 3, type: "Theory" },
+                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "Practical" },
+                    { code: "100218P", name: "Python Programming Lab", credit: 1, type: "Practical" },
+                    { code: "100219P", name: "Introduction to Web Design Lab", credit: 1, type: "Practical" }
                 ],
-                "3rd Semester": [
-                    { code: "100311", name: "MATHEMATICS-III (DIFFERENTIAL CALCULUS)", credit: 2, type: "theory" },
-                    { code: "100313", name: "OBJECT ORIENTED PROGRAMMING USING C++", credit: 3, type: "theory" },
-                    { code: "100314", name: "TECHNICAL WRITING", credit: 3, type: "theory" },
-                    { code: "100314", name: "ANALOG ELECTRONIC CIRCUITS", credit: 3, type: "theory" }, // Duplicate code, assumed intentional or specific context
-                    { code: "100304", name: "DATA STRUCTURE & ALGORITHMS", credit: 3, type: "theory" },
-                    { code: "100313P", name: "OBJECT ORIENTED PROGRAMMING USING C++ LAB", credit: 2, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" },
-                    { code: "100302P", name: "Analog Electronics Circuits Laboratory LAB", credit: 2, type: "practical" },
-                    { code: "100304P", name: "DATA STRUCTURE & ALGORITHMS LAB", credit: 2, type: "practical" }
+                "3": [
+                    { code: "100311", name: "MATHEMATICS-III (DIFFERENTIAL CALCULUS)", credit: 2, type: "Theory" },
+                    { code: "100313", name: "OBJECT ORIENTED PROGRAMMING USING C++", credit: 3, type: "Theory" },
+                    { code: "100314", name: "TECHNICAL WRITING", credit: 3, type: "Theory" },
+                    { code: "100302", name: "ANALOG ELECTRONIC CIRCUITS", credit: 3, type: "Theory" },
+                    { code: "100304", name: "DATA STRUCTURE & ALGORITHMS", credit: 3, type: "Theory" },
+                    { code: "100313P", name: "OBJECT ORIENTED PROGRAMMING USING C++ LAB", credit: 2, type: "Practical" },
+                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
+                    { code: "100302P", name: "Analog Electronics Circuits Laboratory LAB", credit: 2, type: "Practical" },
+                    { code: "100304P", name: "DATA STRUCTURE & ALGORITHMS LAB", credit: 2, type: "Practical" }
                 ],
-                "4th Semester": [
-                    { code: "100403", name: "Digital Electronics", credit: 3, type: "theory" },
-                    { code: "100404", name: "Discrete Mathematics", credit: 4, type: "theory" },
-                    { code: "100407", name: "Human Resource Development and Organizational Behavior", credit: 3, type: "theory" },
-                    { code: "105401", name: "Computer Organization & Architecture", credit: 3, type: "theory" },
-                    { code: "105402", name: "Design & Analysis of Algorithms", credit: 3, type: "theory" },
-                    { code: "105403", name: "Operating Systems", credit: 3, type: "theory" },
-                    { code: "100403P", name: "Digital Electronics", credit: 2, type: "practical" },
-                    { code: "105401P", name: "Computer Organization & Architecture", credit: 2, type: "practical" },
-                    { code: "105402P", name: "Design & Analysis of Algorithms", credit: 2, type: "practical" },
-                    { code: "105403P", name: "Operating Systems", credit: 2, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // MOOCs option
+                "4": [
+                    { code: "100403", name: "Digital Electronics", credit: 3, type: "Theory" },
+                    { code: "100404", name: "Discrete Mathematics", credit: 4, type: "Theory" },
+                    { code: "100407", name: "Human Resource Development and Organizational Behavior", credit: 3, type: "Theory" },
+                    { code: "105401", name: "Computer Organization & Architecture", credit: 3, type: "Theory" },
+                    { code: "105402", name: "Design & Analysis of Algorithms", credit: 3, type: "Theory" },
+                    { code: "105403", name: "Operating Systems", credit: 3, type: "Theory" },
+                    { code: "100403P", name: "Digital Electronics", credit: 2, type: "Practical" },
+                    { code: "105401P", name: "Computer Organization & Architecture", credit: 2, type: "Practical" },
+                    { code: "105402P", name: "Design & Analysis of Algorithms", credit: 2, type: "Practical" },
+                    { code: "105403P", name: "Operating Systems", credit: 2, type: "Practical" }
                 ],
-                "5th Semester": [
-                    { code: "100508", name: "Professional Skill Development", credit: 3, type: "theory" },
-                    { code: "105501", name: "Artificial intelligence", credit: 3, type: "theory" },
-                    { code: "105502", name: "Database Management Systems", credit: 3, type: "theory" },
-                    { code: "105503", name: "Formal Language & Automata Theory", credit: 4, type: "theory" },
-                    { code: "105504", name: "Software Engineering", credit: 3, type: "theory" },
-                    { code: "105505P", name: "Seminar", credit: 1, type: "special_100" }, // Assuming Seminar is a 100-mark subject
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "special_100" },
-                    { code: "105502P", name: "Database Management Systems", credit: 2, type: "practical" }
+                "5": [
+                    { code: "100508", name: "Professional Skill Development", credit: 3, type: "Theory" },
+                    { code: "105501", name: "Artificial intelligence", credit: 3, type: "Theory" },
+                    { code: "105502", name: "Database Management Systems", credit: 3, type: "Theory" },
+                    { code: "105503", name: "Formal Language & Automata Theory", credit: 4, type: "Theory" },
+                    { code: "105504", name: "Software Engineering", credit: 3, type: "Theory" },
+                    { code: "105505P", name: "Seminar", credit: 1, type: "Practical" },
+                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "Special" },
+                    { code: "105502P", name: "Database Management Systems", credit: 2, type: "Practical" }
                 ]
             },
-            "Civil Engineering": {
-                "1st Semester": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "theory" },
-                    { code: "100105", name: "Engineering Mechanics", credit: 4, type: "theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "practical" }
+            "Civil": {
+                "1": [
+                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
+                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
+                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
+                    { code: "100105", name: "Engineering Mechanics", credit: 4, type: "Theory" },
+                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
+                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
+                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" }
                 ],
-                "2nd Semester": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "practical" },
-                    { code: "100210", name: "Building Material and Construction Techniques", credit: 2, type: "theory" },
-                    { code: "100211", name: "Environmental Science and Sanitation", credit: 2, type: "theory" },
-                    { code: "100212", name: "Elements of Civil Engineering", credit: 2, type: "theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" },
-                    { code: "100210P", name: "Building Material and Construction Techniques Lab", credit: 1, type: "practical" }
+                "2": [
+                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
+                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
+                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
+                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
+                    { code: "100210", name: "Building Material and Construction Techniques", credit: 2, type: "Theory" },
+                    { code: "100211", name: "Environmental Science and Sanitation", credit: 2, type: "Theory" },
+                    { code: "100212", name: "Elements of Civil Engineering", credit: 2, type: "Theory" },
+                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
+                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
+                    { code: "100210P", name: "Building Material and Construction Techniques Lab", credit: 1, type: "Practical" }
                 ],
-                "3rd Semester": [
-                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 2, type: "theory" },
-                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILITY AND STATISTICS)", credit: 2, type: "theory" },
-                    { code: "101302", name: "BASIC ELECTRONICS", credit: 1, type: "theory" },
-                    { code: "101303", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "theory" },
-                    { code: "101304", name: "ENGINEERING MECHANICS", credit: 4, type: "theory" },
-                    { code: "101305", name: "HUMANITIES-I(EFFECTIVE TECHNICAL COMMUNICATION)", credit: 3, type: "theory" },
-                    { code: "101306", name: "INTRODUCTION TO CIVIL ENGINEERING", credit: 2, type: "theory" },
-                    { code: "101308", name: "SURVEYING & GEOMATICS", credit: 2, type: "theory" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" },
-                    { code: "101302P", name: "BASIC ELECTRONICS", credit: 1, type: "practical" },
-                    { code: "101303P", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "practical" },
-                    { code: "101308P", name: "SURVEYING & GEOMATICS", credit: 1, type: "practical" }
+                "3": [
+                    { code: "100301", name: "BIOLOGY FOR ENGINEERS", credit: 2, type: "Theory" },
+                    { code: "100312", name: "MATHEMATICS-III (PDE, PROBABILITY AND STATISTICS)", credit: 2, type: "Theory" },
+                    { code: "101302", name: "BASIC ELECTRONICS", credit: 1, type: "Theory" },
+                    { code: "101303", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "Theory" },
+                    { code: "101304", name: "ENGINEERING MECHANICS", credit: 4, type: "Theory" },
+                    { code: "101305", name: "HUMANITIES-I(EFFECTIVE TECHNICAL COMMUNICATION)", credit: 3, type: "Theory" },
+                    { code: "101306", name: "INTRODUCTION TO CIVIL ENGINEERING", credit: 2, type: "Theory" },
+                    { code: "101308", name: "SURVEYING & GEOMATICS", credit: 2, type: "Theory" },
+                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
+                    { code: "101302P", name: "BASIC ELECTRONICS", credit: 1, type: "Practical" },
+                    { code: "101303P", name: "COMPUTER AIDED CIVIL ENGINEERING DRAWING", credit: 1, type: "Practical" },
+                    { code: "101308P", name: "SURVEYING & GEOMATICS", credit: 1, type: "Practical" }
                 ],
-                "4th Semester": [
-                    { code: "101401", name: "Civil Engineering - Societal & Global Impact", credit: 2, type: "theory" },
-                    { code: "101402", name: "Disaster Preparedness & Planning", credit: 2, type: "theory" },
-                    { code: "101403", name: "Engineering Geology", credit: 2, type: "theory" },
-                    { code: "101404", name: "Introduction to Fluid Mechanics", credit: 3, type: "theory" },
-                    { code: "101405", name: "Introduction to Solid Mechanics", credit: 3, type: "theory" },
-                    { code: "101406", name: "Materials, Testing & Evaluation", credit: 2, type: "theory" },
-                    { code: "101407", name: "Mechanical Engineering", credit: 3, type: "theory" },
-                    { code: "101408", name: "Structural Analysis", credit: 4, type: "theory" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" },
-                    { code: "101403P", name: "Engineering Geology", credit: 1, type: "practical" },
-                    { code: "101404P", name: "Introduction to Fluid Mechanics", credit: 1, type: "practical" },
-                    { code: "101406P", name: "Materials, Testing & Evaluation", credit: 1, type: "practical" }
+                "4": [
+                    { code: "101401", name: "Civil Engineering - Societal & Global Impact", credit: 2, type: "Theory" },
+                    { code: "101402", name: "Disaster Preparedness & Planning", credit: 2, type: "Theory" },
+                    { code: "101403", name: "Engineering Geology", credit: 2, type: "Theory" },
+                    { code: "101404", name: "Introduction to Fluid Mechanics", credit: 3, type: "Theory" },
+                    { code: "101405", name: "Introduction to Solid Mechanics", credit: 3, type: "Theory" },
+                    { code: "101406", name: "Materials, Testing & Evaluation", credit: 2, type: "Theory" },
+                    { code: "101407", name: "Mechanical Engineering", credit: 3, type: "Theory" },
+                    { code: "101408", name: "Structural Analysis", credit: 4, type: "Theory" },
+                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "Special" },
+                    { code: "101403P", name: "Engineering Geology", credit: 1, type: "Practical" },
+                    { code: "101404P", name: "Introduction to Fluid Mechanics", credit: 1, type: "Practical" },
+                    { code: "101406P", name: "Materials, Testing & Evaluation", credit: 1, type: "Practical" }
                 ],
-                "5th Semester": [
-                    { code: "101501", name: "Analysis and Design of Concrete Structure", credit: 3, type: "theory" },
-                    { code: "101502", name: "Environmental Engineering -I", credit: 3, type: "theory" },
-                    { code: "101503", name: "Geotechnical Engineering -I", credit: 3, type: "theory" },
-                    { code: "101504", name: "Hydraulic Engineering", credit: 2, type: "theory" },
-                    { code: "101505", name: "Hydrology & Water Resources Engineering", credit: 2, type: "theory" },
-                    { code: "101506", name: "Mechanics of Materials", credit: 3, type: "theory" },
-                    { code: "101507", name: "Transportation Engineering", credit: 3, type: "theory" },
-                    { code: "100510", name: "Summer Entrepreneurship - II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" }, // Assuming MOOCs are here
-                    { code: "101502P", name: "Environmental Engineering -I", credit: 1, type: "practical" },
-                    { code: "101503P", name: "Geotechnical Engineering -I", credit: 1, type: "practical" },
-                    { code: "101504P", name: "Hydraulic Engineering", credit: 1, type: "practical" },
-                    { code: "101505P", name: "Hydrology & Water Resources Engineering", credit: 1, type: "practical" },
-                    { code: "101507P", name: "Transportation Engineering", credit: 1, type: "practical" }
+                "5": [
+                    { code: "101501", name: "Analysis and Design of Concrete Structure", credit: 3, type: "Theory" },
+                    { code: "101502", name: "Environmental Engineering -I", credit: 3, type: "Theory" },
+                    { code: "101503", name: "Geotechnical Engineering -I", credit: 3, type: "Theory" },
+                    { code: "101504", name: "Hydraulic Engineering", credit: 2, type: "Theory" },
+                    { code: "101505", name: "Hydrology & Water Resources Engineering", credit: 2, type: "Theory" },
+                    { code: "101506", name: "Mechanics of Materials", credit: 3, type: "Theory" },
+                    { code: "101507", name: "Transportation Engineering", credit: 3, type: "Theory" },
+                    { code: "100510", name: "Summer Entrepreneurship - II", credit: 6, type: "Special" },
+                    { code: "101502P", name: "Environmental Engineering -I", credit: 1, type: "Practical" },
+                    { code: "101503P", name: "Geotechnical Engineering -I", credit: 1, type: "Practical" },
+                    { code: "101504P", name: "Hydraulic Engineering", credit: 1, type: "Practical" },
+                    { code: "101505P", name: "Hydrology & Water Resources Engineering", credit: 1, type: "Practical" },
+                    { code: "101507P", name: "Transportation Engineering", credit: 1, type: "Practical" }
                 ]
             },
-            "Chemical Engineering": {
-                "1st Semester": [
-                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100103", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "theory" },
-                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "practical" },
-                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
-                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "practical" },
-                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "practical" }
+            "Chemical": {
+                "1": [
+                    { code: "100101", name: "Engineering Chemistry", credit: 3, type: "Theory" },
+                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100103", name: "Communicative English", credit: 3, type: "Theory" },
+                    { code: "100104", name: "Engineering Graphics and Design", credit: 1, type: "Theory" },
+                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
+                    { code: "100109P", name: "Sports/Yoga/NCC/NSS", credit: 1, type: "Practical" },
+                    { code: "100101P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+                    { code: "100103P", name: "Communicative English Lab", credit: 1, type: "Practical" },
+                    { code: "100104P", name: "Engineering Graphics and Design Lab", credit: 2, type: "Practical" },
+                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" }
                 ],
-                "2nd Semester": [
-                    { code: "100201", name: "Engineering Physics", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "theory" },
-                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "practical" },
-                    { code: "100206", name: "Workshop Practices", credit: 2, type: "theory" },
-                    { code: "100213", name: "Introduction to Chemical Engineering", credit: 4, type: "theory" },
-                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
-                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" },
-                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "practical" }
+                "2": [
+                    { code: "100201", name: "Engineering Physics", credit: 3, type: "Theory" },
+                    { code: "100202", name: "Engineering Mathematics-II", credit: 4, type: "Theory" },
+                    { code: "100203", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
+                    { code: "100214P", name: "Swachha Bharat Mission", credit: 1, type: "Practical" },
+                    { code: "100206", name: "Workshop Practices", credit: 2, type: "Theory" },
+                    { code: "100213", name: "Introduction to Chemical Engineering", credit: 4, type: "Theory" },
+                    { code: "100201P", name: "Engineering Physics Lab", credit: 1, type: "Practical" },
+                    { code: "100203P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" },
+                    { code: "100206P", name: "Workshop Practices Lab", credit: 1, type: "Practical" }
                 ],
-                "3rd Semester": [
-                    { code: "114301", name: "Introduction to Chemical Engineering", credit: 3, type: "theory" },
-                    { code: "114302", name: "Process Calculation", credit: 3, type: "theory" },
-                    { code: "114303", name: "Solid Fluid Operations", credit: 3, type: "theory" },
-                    { code: "114304", name: "Physical & Organic Chemistry", credit: 3, type: "theory" },
-                    { code: "114305", name: "Python programming", credit: 3, type: "theory" },
-                    { code: "114306", name: "Maths – III", credit: 4, type: "theory" },
-                    { code: "114303P", name: "Solid Fluid Operations Lab", credit: 1.50, type: "practical" },
-                    { code: "114305P", name: "Python programming Lab", credit: 1.50, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" } // Assuming internship is in Chemical Engg 3rd Sem
+                "3": [
+                    { code: "114301", name: "Introduction to Chemical Engineering", credit: 3, type: "Theory" },
+                    { code: "114302", name: "Process Calculation", credit: 3, type: "Theory" },
+                    { code: "114303", name: "Solid Fluid Operations", credit: 3, type: "Theory" },
+                    { code: "114304", name: "Physical & Organic Chemistry", credit: 3, type: "Theory" },
+                    { code: "114305", name: "Python programming", credit: 3, type: "Theory" },
+                    { code: "114306", name: "Maths – III", credit: 4, type: "Theory" },
+                    { code: "114303P", name: "Solid Fluid Operations Lab", credit: 1.5, type: "Practical" },
+                    { code: "114305P", name: "Python programming Lab", credit: 1.5, type: "Practical" }
                 ],
-                "4th Semester": [
-                    { code: "114401", name: "Chemical Process Technology", credit: 3, type: "theory" },
-                    { code: "114402", name: "Chemical Engineering Materials", credit: 3, type: "theory" },
-                    { code: "114403", name: "Chemical Engineering Thermodynamics", credit: 3, type: "theory" },
-                    { code: "114404", name: "Industrial Fluid Flow Operations", credit: 3, type: "theory" },
-                    { code: "114405", name: "Process Equipment Design and Drawing", credit: 3, type: "theory" },
-                    { code: "114401P", name: "Chemical Process Technology Lab", credit: 2, type: "practical" },
-                    { code: "114404P", name: "Industrial Fluid Flow Operation Lab", credit: 2, type: "practical" },
-                    { code: "114405P", name: "Process Equipment Design and Drawing Lab", credit: 2, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // Assuming MOOCs option
+                "4": [
+                    { code: "114401", name: "Chemical Process Technology", credit: 3, type: "Theory" },
+                    { code: "114402", name: "Chemical Engineering Materials", credit: 3, type: "Theory" },
+                    { code: "114403", name: "Chemical Engineering Thermodynamics", credit: 3, type: "Theory" },
+                    { code: "114404", name: "Industrial Fluid Flow Operations", credit: 3, type: "Theory" },
+                    { code: "114405", name: "Process Equipment Design and Drawing", credit: 3, type: "Theory" },
+                    { code: "114401P", name: "Chemical Process Technology Lab", credit: 2, type: "Practical" },
+                    { code: "114404P", name: "Industrial Fluid Flow Operation Lab", credit: 2, type: "Practical" },
+                    { code: "114405P", name: "Process Equipment Design and Drawing Lab", credit: 2, type: "Practical" }
                 ]
-                // Chemical Engineering 5th semester data will be added later
             },
-            "Electrical & Electronics Engineering": {
-                "1st Semester": [
-                    { code: "100101", name: "Engineering Physics", credit: 3, type: "theory" },
-                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "theory" },
-                    { code: "100112", name: "Workshop Practices", credit: 2, type: "theory" },
-                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "theory" },
-                    { code: "100115P", name: "Swachha Bharat Mission (SBM)", credit: 1, type: "practical" },
-                    { code: "100101P", name: "Engineering Physics Lab", credit: 1, type: "practical" },
-                    { code: "100112P", name: "Workshop Practices Lab", credit: 1, type: "practical" },
-                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "practical" },
-                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "practical" }
+            "Electrical & Electronics": {
+                "1": [
+                    { code: "100101", name: "Engineering Physics", credit: 3, type: "Theory" },
+                    { code: "100102", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100111", name: "Programming for Problem Solving", credit: 3, type: "Theory" },
+                    { code: "100112", name: "Workshop Practices", credit: 2, type: "Theory" },
+                    { code: "100106", name: "Basic Electrical Engineering", credit: 3, type: "Theory" },
+                    { code: "100115P", name: "Swachha Bharat Mission (SBM)", credit: 1, type: "Practical" },
+                    { code: "100101P", name: "Engineering PhysicsLab", credit: 1, type: "Practical" },
+                    { code: "100112P", name: "Workshop Practices Lab", credit: 1, type: "Practical" },
+                    { code: "100106P", name: "Basic Electrical Engineering Lab", credit: 1, type: "Practical" },
+                    { code: "100111P", name: "Programming for Problem Solving Lab", credit: 1, type: "Practical" }
                 ],
-                "2nd Semester": [
-                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "theory" },
-                    { code: "100202", name: "Engineering Mathematics-I", credit: 4, type: "theory" },
-                    { code: "100216", name: "Communicative English", credit: 3, type: "theory" },
-                    { code: "100220P", name: "Sports/YogaNCC/NSS", credit: 1, type: "practical" },
-                    { code: "100209", name: "Basic Electronics", credit: 3, type: "theory" },
-                    { code: "100217", name: "Engineering Graphics & Design", credit: 1, type: "theory" },
-                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "practical" },
-                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "practical" },
-                    { code: "100209P", name: "Basic Electronics Lab", credit: 1, type: "practical" },
-                    { code: "100217P", name: "Engineering Graphics & Design Lab", credit: 2, type: "practical" }
+                "2": [
+                    { code: "100215", name: "Engineering Chemistry", credit: 3, type: "Theory" },
+                    { code: "100202", name: "Engineering Mathematics-I", credit: 4, type: "Theory" },
+                    { code: "100216", name: "Communicative English", credit: 3, type: "Theory" },
+                    { code: "100220P", name: "Sports/YogaNCC/NSS", credit: 1, type: "Practical" },
+                    { code: "100209", name: "Basic Electronics", credit: 3, type: "Theory" },
+                    { code: "100217", name: "Engineering Graphics & Design", credit: 1, type: "Theory" },
+                    { code: "100215P", name: "Engineering Chemistry Lab", credit: 1, type: "Practical" },
+                    { code: "100216P", name: "Communicative English Lab", credit: 1, type: "Practical" },
+                    { code: "100209P", name: "Basic Electronics Lab", credit: 1, type: "Practical" },
+                    { code: "100217P", name: "Engineering Graphics & Design Lab", credit: 2, type: "Practical" }
                 ],
-                "3rd Semester": [
-                    { code: "100305", name: "DIGITAL ELECTRONICS", credit: 3, type: "theory" },
-                    { code: "100306", name: "ELECTRICAL CIRCUIT ANALYSIS", credit: 4, type: "theory" },
-                    { code: "100307", name: "ELECTRICAL MACHINES - I", credit: 3, type: "theory" },
-                    { code: "100308", name: "ELECTROMAGNETIC FIELDS", credit: 4, type: "theory" },
-                    { code: "100310", name: "ENGINEERING MECHANICS", credit: 4, type: "theory" },
-                    { code: "100307P", name: "Electrical Machines Laboratory", credit: 1, type: "practical" },
-                    { code: "100399", name: "Internship", credit: 4, type: "special_100" },
-                    { code: "110301", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "special_100" }
+                "3": [
+                    { code: "100305", name: "DIGITAL ELECTRONICS", credit: 3, type: "Theory" },
+                    { code: "100306", name: "ELECTRICAL CIRCUIT ANALYSIS", credit: 4, type: "Theory" },
+                    { code: "100307", name: "ELECTRICAL MACHINES - I", credit: 3, type: "Theory" },
+                    { code: "100308", name: "ELECTROMAGNETIC FIELDS", credit: 4, type: "Theory" },
+                    { code: "100310", name: "ENGINEERING MECHANICS", credit: 4, type: "Theory" },
+                    { code: "100307P", name: "Electrical Machines Laboratory –", credit: 1, type: "Practical" },
+                    { code: "100399", name: "Internship", credit: 4, type: "Special" },
+                    { code: "110301", name: "MOOCs / SWAYAM / NPTEL Courses 1", credit: 2, type: "Special" }
                 ],
-                "4th Semester": [
-                    { code: "100401", name: "Biology for Engineers", credit: 3, type: "theory" },
-                    { code: "110401", name: "Analog Electronics", credit: 3, type: "theory" },
-                    { code: "110402", name: "Electrical Machines – II", credit: 3, type: "theory" },
-                    { code: "110403", name: "Industrial Economics & Foreign Trade", credit: 2, type: "theory" },
-                    { code: "110404", name: "Mathematics–III (Probability and Statistics)", credit: 4, type: "theory" },
-                    { code: "110405", name: "Microprocessors", credit: 3, type: "theory" },
-                    { code: "110406", name: "Signals and Systems", credit: 3, type: "theory" },
-                    { code: "110401P", name: "Analog Electronics", credit: 1, type: "practical" },
-                    { code: "110402P", name: "Electrical Machines – II", credit: 1, type: "practical" },
-                    { code: "110405P", name: "Microprocessors", credit: 1, type: "practical" },
-                    { code: "100408", name: "MOOCs / SWAYAM / NPTEL Courses - 1", credit: 2, type: "special_100" } // Assuming MOOCs option
+                "4": [
+                    { code: "100401", name: "Biology for Engineers", credit: 3, type: "Theory" },
+                    { code: "110401", name: "Analog Electronics", credit: 3, type: "Theory" },
+                    { code: "110402", name: "Electrical Machines – II", credit: 3, type: "Theory" },
+                    { code: "110403", name: "Industrial Economics & Foreign Trade", credit: 2, type: "Theory" },
+                    { code: "110404", "name": "Mathematics–III (Probability and Statistics)", credit: 4, type: "Theory" },
+                    { code: "110405", name: "Microprocessors", credit: 3, type: "Theory" },
+                    { code: "110406", name: "Signals and Systems", credit: 3, type: "Theory" },
+                    { code: "110401P", name: "Analog Electronics", credit: 1, type: "Practical" },
+                    { code: "110402P", name: "Electrical Machines – II", credit: 1, type: "Practical" },
+                    { code: "110405P", name: "Microprocessors", credit: 1, type: "Practical" }
                 ],
-                "5th Semester": [
-                    { code: "100502", name: "Control Systems", credit: 3, type: "theory" },
-                    { code: "100506", name: "Power Electronics", credit: 3, type: "theory" },
-                    { code: "100507", name: "Power Systems–I (Apparatus and Modelling)", credit: 3, type: "theory" },
-                    { code: "110501", name: "Analog & Digital Communication System", credit: 3, type: "theory" },
-                    { code: "100502P", name: "Control Systems", credit: 1, type: "practical" },
-                    { code: "100506P", name: "Power Electronics", credit: 1, type: "practical" },
-                    { code: "100507P", name: "Power Systems–I (Apparatus and Modelling)", credit: 1, type: "practical" },
-                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "special_100" },
-                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "special_100" },
-                    { code: "110501P", name: "Analog & Digital Communication System", credit: 1, type: "practical" },
-                    { code: "110504", name: "Simulation Tools for Electrical & Electronics Engineering", credit: 1, type: "special_100" } // Assuming this is also a 100-mark subject
+                "5": [
+                    { code: "100502", name: "Control Systems", credit: 3, type: "Theory" },
+                    { code: "100506", name: "Power Electronics", credit: 3, type: "Theory" },
+                    { code: "100507", name: "Power Systems–I (Apparatus and Modelling)", credit: 3, type: "Theory" },
+                    { code: "110501", name: "Analog & Digital Communication System", credit: 3, type: "Theory" },
+                    { code: "100502P", name: "Control Systems", credit: 1, type: "Practical" },
+                    { code: "100506P", name: "Power Electronics", credit: 1, type: "Practical" },
+                    { code: "100507P", name: "Power Systems–I (Apparatus and Modelling)", credit: 1, type: "Practical" },
+                    { code: "100510", name: "Summer Entrepreneurship – II", credit: 6, type: "Special" },
+                    { code: "100511", name: "MOOCs / SWAYAM / NPTEL Courses 2", credit: 2, type: "Special" },
+                    { code: "110501P", name: "Analog & Digital Communication System", credit: 1, type: "Practical" },
+                    { code: "110504", name: "Simulation Tools for Electrical & Electronics Engineering", credit: 1, type: "Theory" }
                 ]
             }
         };
-        /* data.js content ends here */
-
-        /* script.js content starts here */
-        // Grade point mapping
-        const gradePoints = {
-            'A+': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 6, 'P': 5, 'F': 0
-        };
-
-        // Function to determine grade point for Theory subjects (out of 100)
-        // Includes specific condition for End-Sem exam marks
-        function getTheoryGradePoint(endSemMarks, collegeMarks) {
-            const totalMarks = parseInt(endSemMarks) + parseInt(collegeMarks);
-
-            // Fail condition: End-Sem marks less than 25 (out of 70)
-            if (parseInt(endSemMarks) < 25) {
-                return 0; // Fail
-            }
-
-            // Regular grading based on total marks if End-Sem condition is met
-            if (totalMarks >= 90) return gradePoints['A+'];
-            if (totalMarks >= 80) return gradePoints['A'];
-            if (totalMarks >= 70) return gradePoints['B'];
-            if (totalMarks >= 60) return gradePoints['C'];
-            if (totalMarks >= 50) return gradePoints['D'];
-            if (totalMarks >= 35) return gradePoints['P'];
-            return gradePoints['F']; // Fallback, though usually handled by above conditions
-        }
-
-        // Function to determine grade point for Practical subjects (out of 50)
-        // Includes specific condition for total marks less than 20
-        function getPracticalGradePoint(universityMarks, collegeMarks) {
-            const totalMarks = parseInt(universityMarks) + parseInt(collegeMarks);
-            const percentage = (totalMarks / 50) * 100;
-
-            // Fail condition: Total practical marks less than 20 (out of 50)
-            if (totalMarks < 20) {
-                return 0; // Fail
-            }
-
-            // Regular grading based on percentage if total marks >= 20
-            if (percentage >= 90) return gradePoints['A+'];
-            if (percentage >= 80) return gradePoints['A'];
-            if (percentage >= 70) return gradePoints['B'];
-            if (percentage >= 60) return gradePoints['C'];
-            if (percentage >= 50) return gradePoints['D'];
-            if (percentage >= 40) return gradePoints['P']; // 40-49% as per your Practical grading
-            return gradePoints['F']; // Fallback
-        }
-
-        // Function to determine grade point for 100-mark special subjects (Internship, MOOCs, etc.)
-        function getSpecial100GradePoint(totalMarks) {
-            totalMarks = parseInt(totalMarks);
-            if (totalMarks >= 90) return gradePoints['A+'];
-            if (totalMarks >= 80) return gradePoints['A'];
-            if (totalMarks >= 70) return gradePoints['B'];
-            if (totalMarks >= 60) return gradePoints['C'];
-            if (totalMarks >= 50) return gradePoints['D'];
-            if (totalMarks >= 35) return gradePoints['P'];
-            return gradePoints['F'];
-        }
 
         // DOM Elements
-        const branchSelect = document.getElementById('branchSelect');
-        const semesterSelect = document.getElementById('semesterSelect');
-        const subjectsContainer = document.getElementById('subjectsContainer');
-        const calculateSGPABtn = document.getElementById('calculateSGPABtn');
-        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-        const resultContainer = document.getElementById('resultContainer');
+        const branchSelect = document.getElementById('branch-select');
+        const semesterSelect = document.getElementById('semester-select');
+        const subjectTable = document.getElementById('subject-table');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultContainer = document.getElementById('result-container');
+        const resultText = document.getElementById('result-text');
 
-        // Populate Semesters based on Branch selection
-        branchSelect.addEventListener('change', () => {
-            const selectedBranch = branchSelect.value;
-            semesterSelect.innerHTML = '<option value="">-- Select Semester --</option>'; // Clear previous options
+        // Functions
+        function populateBranches() {
+            const branches = Object.keys(universityData);
+            branches.forEach(branch => {
+                const option = document.createElement('option');
+                option.value = branch;
+                option.textContent = branch;
+                branchSelect.appendChild(option);
+            });
+        }
+
+        function populateSemesters(branch) {
+            semesterSelect.innerHTML = '<option value="">-- Semester Chunein --</option>';
             semesterSelect.disabled = true;
-            subjectsContainer.innerHTML = '<p class="placeholder-text">Please select your Branch and Semester to load subjects.</p>';
-            calculateSGPABtn.disabled = true;
-            downloadPdfBtn.disabled = true;
-            resultContainer.innerHTML = '';
-
-            if (selectedBranch && subjectsData[selectedBranch]) {
-                const semesters = Object.keys(subjectsData[selectedBranch]);
-                semesters.forEach(semester => {
+            if (branch && universityData[branch]) {
+                const semesters = Object.keys(universityData[branch]);
+                semesters.forEach(sem => {
                     const option = document.createElement('option');
-                    option.value = semester;
-                    option.textContent = semester;
+                    option.value = sem;
+                    option.textContent = `${sem}`;
                     semesterSelect.appendChild(option);
                 });
                 semesterSelect.disabled = false;
             }
-        });
+        }
 
-        // Load subjects based on Semester selection
-        semesterSelect.addEventListener('change', () => {
-            const selectedBranch = branchSelect.value;
-            const selectedSemester = semesterSelect.value;
-            subjectsContainer.innerHTML = ''; // Clear previous subjects
-            resultContainer.innerHTML = '';
+        function generateSubjectTable(branch, semester) {
+            subjectTable.innerHTML = '';
+            calculateBtn.classList.add('hidden');
+            resultContainer.classList.add('hidden');
 
-            if (selectedBranch && selectedSemester) {
-                const subjects = subjectsData[selectedBranch][selectedSemester];
-                
-                let theorySection = document.createElement('div');
-                theorySection.className = 'subject-section theory-section';
-                theorySection.innerHTML = '<h3>Theory Subjects (End-Sem / College)</h3>';
-                
-                let practicalSection = document.createElement('div');
-                practicalSection.className = 'subject-section practical-section';
-                practicalSection.innerHTML = '<h3>Practical Subjects (University / College)</h3>';
-
-                let specialSection = document.createElement('div');
-                specialSection.className = 'subject-section special-section';
-                specialSection.innerHTML = '<h3>Internship & MOOCs / SWAYAM / NPTEL Courses (Total Marks)</h3>';
-
-                subjects.forEach(subject => {
-                    const subjectItem = document.createElement('div');
-                    subjectItem.className = 'subject-item';
-                    subjectItem.dataset.code = subject.code;
-                    subjectItem.dataset.credit = subject.credit;
-                    subjectItem.dataset.type = subject.type; // Store subject type
-
-                    const subjectDetails = document.createElement('div');
-                    subjectDetails.className = 'subject-details';
-                    subjectDetails.innerHTML = `
-                        <div class="name">${subject.code}: ${subject.name}</div>
-                        <div class="credit">Credits: ${subject.credit}</div>
-                    `;
-                    subjectItem.appendChild(subjectDetails);
-
-                    const marksInputDiv = document.createElement('div');
-                    marksInputDiv.className = 'marks-input';
-
-                    if (subject.type === 'theory') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="End-Sem (70)" min="0" max="70" data-part="endSem" required>
-                            <input type="number" placeholder="College (30)" min="0" max="30" data-part="college" required>
-                        `;
-                        theorySection.appendChild(subjectItem);
-                    } else if (subject.type === 'practical') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="University (30)" min="0" max="30" data-part="university" required>
-                            <input type="number" placeholder="College (20)" min="0" max="20" data-part="college" required>
-                        `;
-                        practicalSection.appendChild(subjectItem);
-                    } else if (subject.type === 'special_100') {
-                        marksInputDiv.innerHTML = `
-                            <input type="number" placeholder="Total Marks (100)" min="0" max="100" data-part="total" required>
-                        `;
-                        specialSection.appendChild(subjectItem);
-                    }
-                    subjectItem.appendChild(marksInputDiv);
-                });
-
-                // Append sections only if they contain subjects (more than just the h3 tag)
-                if (theorySection.children.length > 1) subjectsContainer.appendChild(theorySection);
-                if (practicalSection.children.length > 1) subjectsContainer.appendChild(practicalSection);
-                if (specialSection.children.length > 1) subjectsContainer.appendChild(specialSection);
-                
-                // Enable buttons if subjects are loaded
-                if (subjects.length > 0) {
-                    calculateSGPABtn.disabled = false;
-                } else {
-                    calculateSGPABtn.disabled = true;
-                    subjectsContainer.innerHTML = '<p class="placeholder-text">No subjects found for this semester.</p>';
-                }
-
-            } else {
-                calculateSGPABtn.disabled = true;
-                downloadPdfBtn.disabled = true;
-                subjectsContainer.innerHTML = '<p class="placeholder-text">Please select your Branch and Semester to load subjects.</p>';
+            if (!branch || !semester || !universityData[branch][semester]) {
+                return;
             }
-        });
+            
+            const subjects = universityData[branch][semester];
 
-        // Calculate SGPA
-        calculateSGPABtn.addEventListener('click', () => {
-            let totalGradePoints = 0;
-            let totalCredits = 0;
-            let allMarksEntered = true;
-            const subjectResultsForPdf = []; // To store results for PDF generation
+            const thead = `
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Credit</th>
+                        <th>Marks Obtained</th>
+                    </tr>
+                </thead>
+            `;
+            const tbody = document.createElement('tbody');
 
-            const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
-            subjectItems.forEach(item => {
-                const credit = parseFloat(item.dataset.credit);
-                const type = item.dataset.type;
-                const subjectCode = item.dataset.code;
-                const subjectName = item.querySelector('.subject-details .name').textContent.split(': ')[1]; // Extract name
-
-                let gradePoint = 0;
-                let marks1_val, marks2_val, totalCalculatedMarks; // Use distinct names for values
-                let marksDisplayString = ''; // For PDF marks column
-
-                if (type === 'theory') {
-                    const endSemInput = item.querySelector('input[data-part="endSem"]');
-                    const collegeInput = item.querySelector('input[data-part="college"]');
-                    if (endSemInput.value === '' || collegeInput.value === '') {
-                        allMarksEntered = false;
-                        return;
-                    }
-                    marks1_val = parseInt(endSemInput.value); // End-Sem marks
-                    marks2_val = parseInt(collegeInput.value); // College marks
-                    gradePoint = getTheoryGradePoint(marks1_val, marks2_val);
-                    totalCalculatedMarks = marks1_val + marks2_val;
-                    marksDisplayString = `${marks1_val} (End-Sem) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
-                } else if (type === 'practical') {
-                    const universityInput = item.querySelector('input[data-part="university"]');
-                    const collegeInput = item.querySelector('input[data-part="college"]');
-                    if (universityInput.value === '' || collegeInput.value === '') {
-                        allMarksEntered = false;
-                        return;
-                    }
-                    marks1_val = parseInt(universityInput.value); // University marks
-                    marks2_val = parseInt(collegeInput.value); // College marks
-                    gradePoint = getPracticalGradePoint(marks1_val, marks2_val);
-                    totalCalculatedMarks = marks1_val + marks2_val;
-                    marksDisplayString = `${marks1_val} (University) + ${marks2_val} (College) = ${totalCalculatedMarks}`;
-                } else if (type === 'special_100') {
-                    const totalInput = item.querySelector('input[data-part="total"]');
-                    if (totalInput.value === '') {
-                        allMarksEntered = false;
-                        return;
-                    }
-                    marks1_val = parseInt(totalInput.value); // Total marks for special_100
-                    gradePoint = getSpecial100GradePoint(marks1_val);
-                    totalCalculatedMarks = marks1_val;
-                    marksDisplayString = `${totalCalculatedMarks}`; // Only total for special_100
+            subjects.forEach((subject, index) => {
+                const row = document.createElement('tr');
+                row.dataset.credit = subject.credit;
+                row.dataset.type = subject.type;
+                
+                let marksInputHtml = '';
+                if (subject.type === 'Theory') {
+                    marksInputHtml = `
+                        <input type="number" class="marks-input" placeholder="ESE (70)" min="0" max="70" data-mark-type="ese">
+                        <input type="number" class="marks-input" placeholder="IA (30)" min="0" max="30" data-mark-type="ia">
+                    `;
+                } else if (subject.type === 'Practical') {
+                     marksInputHtml = `
+                        <input type="number" class="marks-input" placeholder="Total (50)" min="0" max="50" data-mark-type="total">
+                    `;
+                } else if (subject.type === 'Special') {
+                    marksInputHtml = `
+                        <input type="number" class="marks-input" placeholder="Total (100)" min="0" max="100" data-mark-type="total">
+                    `;
                 }
 
-                totalGradePoints += (gradePoint * credit);
+                row.innerHTML = `
+                    <td>
+                        <div class="subject-name">${subject.name}</div>
+                        <div class="subject-code">${subject.code}</div>
+                    </td>
+                    <td>${subject.credit}</td>
+                    <td>${marksInputHtml}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            subjectTable.innerHTML = thead;
+            subjectTable.appendChild(tbody);
+            calculateBtn.classList.remove('hidden');
+        }
+
+        function getGradePoint(percentage) {
+            if (percentage >= 90) return 10;
+            if (percentage >= 80) return 9;
+            if (percentage >= 70) return 8;
+            if (percentage >= 60) return 7;
+            if (percentage >= 50) return 6;
+            if (percentage >= 35) return 5;
+            return 0;
+        }
+
+        function calculateSGPA() {
+            const rows = subjectTable.querySelectorAll('tbody tr');
+            let totalCredits = 0;
+            let totalWeightedGradePoints = 0;
+            let allInputsValid = true;
+
+            rows.forEach(row => {
+                const credit = parseFloat(row.dataset.credit);
+                const type = row.dataset.type;
+                let gradePoint = 0;
+
                 totalCredits += credit;
                 
-                // Find the grade character from gradePoints based on value
-                const gradeChar = Object.keys(gradePoints).find(key => gradePoints[key] === gradePoint);
-                
-                subjectResultsForPdf.push({ 
-                    code: subjectCode, 
-                    name: subjectName, 
-                    credit: credit, 
-                    marks: marksDisplayString, // Use the prepared display string
-                    grade: gradeChar, 
-                    gradePoint: gradePoint 
-                });
-            });
+                if (type === 'Theory') {
+                    const eseInput = row.querySelector('[data-mark-type="ese"]');
+                    const iaInput = row.querySelector('[data-mark-type="ia"]');
+                    const eseMarks = parseInt(eseInput.value, 10);
+                    const iaMarks = parseInt(iaInput.value, 10);
 
-            if (!allMarksEntered) {
-                resultContainer.innerHTML = '<span style="color: red;">Please enter marks for all subjects.</span>';
-                downloadPdfBtn.disabled = true;
-                return;
-            }
+                    if (isNaN(eseMarks) || isNaN(iaMarks)) {
+                        allInputsValid = false;
+                        return;
+                    }
+                    
+                    if (eseMarks < 25) { // Fail condition
+                        gradePoint = 0;
+                    } else {
+                        const totalMarks = eseMarks + iaMarks;
+                        gradePoint = getGradePoint(totalMarks); // Percentage is same as total marks out of 100
+                    }
+                } else if (type === 'Practical') {
+                    const totalInput = row.querySelector('[data-mark-type="total"]');
+                    const totalMarks = parseInt(totalInput.value, 10);
 
-            let sgpa = 0;
-            if (totalCredits > 0) {
-                sgpa = (totalGradePoints / totalCredits).toFixed(2);
-            }
+                    if (isNaN(totalMarks)) {
+                        allInputsValid = false;
+                        return;
+                    }
+                    
+                    if (totalMarks < 20) { // Fail condition (40% of 50)
+                        gradePoint = 0;
+                    } else {
+                        const percentage = (totalMarks / 50) * 100;
+                        gradePoint = getGradePoint(percentage);
+                    }
+                } else if (type === 'Special') {
+                    const totalInput = row.querySelector('[data-mark-type="total"]');
+                    const totalMarks = parseInt(totalInput.value, 10);
 
-            resultContainer.innerHTML = `Your SGPA: <span style="color: #4CAF50;">${sgpa}</span>`;
-            resultContainer.dataset.sgpa = sgpa; // Store SGPA for PDF
-            resultContainer.dataset.subjectMarks = JSON.stringify(subjectResultsForPdf); // Store marks for PDF
-            downloadPdfBtn.disabled = false;
-        });
-
-        // PDF Download functionality
-        downloadPdfBtn.addEventListener('click', () => {
-            const selectedBranch = branchSelect.value;
-            const selectedSemester = semesterSelect.value;
-            const sgpa = resultContainer.dataset.sgpa;
-            const subjectMarks = JSON.parse(resultContainer.dataset.subjectMarks || '[]');
-
-            if (!sgpa || subjectMarks.length === 0) {
-                alert("Please calculate SGPA first.");
-                return;
-            }
-
-            // Use jsPDF
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(22);
-            doc.setTextColor(255, 140, 0); // Orange color
-            doc.text("SGPA Report", 105, 20, null, null, "center");
-
-            doc.setFontSize(12);
-            doc.setTextColor(240, 240, 240); // Light grey text for details
-            doc.text(`Branch: ${selectedBranch}`, 20, 35);
-            doc.text(`Semester: ${selectedSemester}`, 20, 45);
-
-            doc.setFontSize(16);
-            doc.setTextColor(255, 140, 0); // Orange
-            doc.text(`Your SGPA: ${sgpa}`, 105, 60, null, null, "center");
-
-            let y = 75; // Starting Y position for subjects
-
-            doc.setFontSize(14);
-            doc.setTextColor(255, 140, 0); // Orange
-            doc.text("Subject Breakdown:", 20, y);
-            y += 10;
-
-            doc.setFontSize(10);
-            doc.setTextColor(240, 240, 240); // Light grey
-            
-            // Define column positions (Adjusted for better alignment)
-            const colCode = 15;
-            const colName = 40; // Adjusted for wider subject names
-            const colCredits = 115; // Adjusted
-            const colMarks = 130; // Adjusted for descriptive marks
-            const colGrade = 180; // Adjusted
-            const colGP = 190;   // Adjusted
-
-            // Table Headers
-            doc.text("Code", colCode, y);
-            doc.text("Subject Name", colName, y);
-            doc.text("Credits", colCredits, y);
-            doc.text("Marks Obtained", colMarks, y);
-            doc.text("Grade", colGrade, y);
-            doc.text("GP", colGP, y);
-            y += 5;
-            doc.line(colCode, y, 200, y); // Horizontal line, adjusted end for wider columns
-            y += 5;
-
-            subjectMarks.forEach(sub => {
-                doc.text(sub.code, colCode, y);
-                doc.text(sub.name, colName, y); 
-                doc.text(String(sub.credit), colCredits, y);
-                doc.text(sub.marks, colMarks, y); // This will include the breakdown string
-                doc.text(sub.grade, colGrade, y);
-                doc.text(String(sub.gradePoint), colGP, y);
-                y += 7; // Line height for each subject
-                if (y > 280) { // Check for page break (near bottom of page)
-                    doc.addPage();
-                    y = 20; // Reset y for new page
-                    doc.setFontSize(10);
-                    doc.setTextColor(240, 240, 240);
-                    // Repeat headers on new page
-                    doc.text("Code", colCode, y);
-                    doc.text("Subject Name", colName, y);
-                    doc.text("Credits", colCredits, y);
-                    doc.text("Marks Obtained", colMarks, y);
-                    doc.text("Grade", colGrade, y);
-                    doc.text("GP", colGP, y);
-                    y += 5;
-                    doc.line(colCode, y, 200, y);
-                    y += 5;
+                    if (isNaN(totalMarks)) {
+                        allInputsValid = false;
+                        return;
+                    }
+                    // No specific fail condition mentioned, just grade based on percentage
+                    gradePoint = getGradePoint(totalMarks);
                 }
+
+                totalWeightedGradePoints += credit * gradePoint;
             });
 
-            doc.save(`SGPA_Report_${selectedBranch.replace(/\s/g, '_')}_${selectedSemester.replace(/\s/g, '_')}.pdf`);
+            if (!allInputsValid) {
+                alert('Kripya sabhi subjects ke marks daalein.');
+                return;
+            }
+
+            if (totalCredits === 0) {
+                resultText.innerHTML = "Credits 0 hain, SGPA calculate nahi kiya ja sakta.";
+            } else {
+                const sgpa = totalWeightedGradePoints / totalCredits;
+                resultText.innerHTML = `
+                    Total Credits: <strong>${totalCredits.toFixed(2)}</strong><br>
+                    Aapka SGPA Hai: <p class="result-sgpa">${sgpa.toFixed(2)}</p>
+                `;
+            }
+            resultContainer.classList.remove('hidden');
+        }
+
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', populateBranches);
+
+        branchSelect.addEventListener('change', (e) => {
+            populateSemesters(e.target.value);
+            // Clear table when branch changes
+            generateSubjectTable(null, null);
+        });
+        
+        semesterSelect.addEventListener('change', (e) => {
+            generateSubjectTable(branchSelect.value, e.target.value);
         });
 
-        // Initial state: Disable semester select and buttons
-        window.addEventListener('load', () => {
-            semesterSelect.disabled = true;
-            calculateSGPABtn.disabled = true;
-            downloadPdfBtn.disabled = true;
-        });
-        /* script.js content ends here */
+        calculateBtn.addEventListener('click', calculateSGPA);
+
     </script>
 </body>
 </html>
